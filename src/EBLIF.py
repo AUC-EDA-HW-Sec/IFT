@@ -4,7 +4,8 @@ class EBLIF:
     def __init__(self, fileName: str):
         self.fileName = fileName
         self.LUTs = []
-        self.variables = []
+        self.input_names = []
+        self.output_names = []
         self.parseFile()
 
     def parseFile(self) -> list: # parses the EBLIF file to extract LUTs
@@ -12,7 +13,7 @@ class EBLIF:
             for line in file:
                 if line.startswith(".inputs"):
                     inputs = line.strip().split()[1:]
-                    self.variables = inputs
+                    self.input_names.extend(inputs)
                 elif line.startswith(".subckt lut"):
                     subckt = line.strip()
                     try:
@@ -21,14 +22,14 @@ class EBLIF:
                         param = None
                     lut = LUT(subckt, param)
                     self.LUTs.append(lut)
-                    self.variables.append(lut.output_name)
+                    self.output_names.extend(lut.output_name)
         return self.LUTs
     
 if __name__ == "__main__":
     eblif = EBLIF("FA_1bit.eblif")
     for lut in eblif.LUTs:
         print("LUT Inputs:", lut.input_names)
-        print("LUT Output:", lut.output_names)
+        print("LUT Output:", lut.output_name)
         print("LUT Output Truth Table:", lut.result)
             
 

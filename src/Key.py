@@ -15,8 +15,8 @@ class Key:
                 ones.append(len(self.key) - i - 1)
             elif self.key[i+self.size//2] == '1':
                 ones.append(len(self.key) - (i+self.size//2) - 1)
-            else:
-                zeros.append(len(self.key) - i - 1)
+            # else:
+            #     zeros.append(len(self.key) - (i+self.size//2) - 1)
         return ones, zeros
     
     def selection(self, bit_position: int, select: int) -> set: # Get addresses where we have '1' or '0' at bit_position
@@ -31,11 +31,14 @@ class Key:
     def getIntersection(self) -> list: # Get intersection of addresses for all '1' bit positions excluding the '0' bit positions
         if(not self.ones):
             return []
+        # print(f"Key: {self.key}")
+        # print(f"Ones: {self.ones}, Zeros: {self.zeros}")
         addresses = self.selection(self.ones[0], 1)
         for i in range(1, len(self.ones)):
             addresses = addresses.intersection(self.selection(self.ones[i], 1))
-        for i in range(len(self.zeros)):
-            addresses = addresses.intersection(self.selection(self.zeros[i], 0))
+        # for i in range(len(self.zeros)):
+        #     addresses = addresses.intersection(self.selection(self.zeros[i], 0))
+        # print(sorted(addresses))
         return sorted(addresses)
 
 # if __name__ == "__main__":
