@@ -15,7 +15,6 @@ class IFT:
         self.name_map = dict(zip(self.input_names, self.vars))
         self.number_of_LUTs = len(self.LUTs)
         self.output_expressions = {}
-        self.map = {}
     
     def ift_logic_generation(self, lut: LUT):
         """
@@ -56,9 +55,9 @@ class IFT:
                             ift_str = ift_str + '0'
                         #print(f"Truth Str: {truth_str}, IFT Str: {ift_str}")
                         mask = mask // 2
-                if truth_str and ift_str:
-                    # print(f"Add Implicant: {truth_str + ift_str}")
-                    implicants.add(truth_str + ift_str)
+                    if truth_str and ift_str:
+                        # print(f"Add Implicant: {truth_str + ift_str}")
+                        implicants.add(truth_str + ift_str)
         # print(f"Implicants: {sorted(implicants)}")
         self.translateImplicants(implicants)
         return implicants
@@ -78,14 +77,12 @@ class IFT:
         for i in range(len(bit_implicant)//2):
             original = i
             tainted = i + len(bit_implicant)//2
-            if bit_implicant[original] == '1' and bit_implicant[tainted] == '1':
-                variable_implicant = variable_implicant + self.input_names[original] + " & "
-            elif bit_implicant[original] == '1' and bit_implicant[tainted] == '0':
-                variable_implicant = variable_implicant + self.input_names[original] + " & "
-            elif bit_implicant[original] == '0' and bit_implicant[tainted] == '1':
-                variable_implicant = variable_implicant + self.input_names[tainted] + " & "
+            if bit_implicant[tainted] == '1':
+                variable_implicant += self.input_names[tainted] + " & "
+            elif bit_implicant[original] == '1':
+                variable_implicant += self.input_names[original] + " & "
             else:
-                variable_implicant = variable_implicant + " ~" + self.input_names[original] + " & "
+                variable_implicant += "~" + self.input_names[original] + " & "
         variable_implicant = variable_implicant[:-3]
         # print(f"Implicant: {bit_implicant} → variable_implicant: {variable_implicant}")
         return variable_implicant
