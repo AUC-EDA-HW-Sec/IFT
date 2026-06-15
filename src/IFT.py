@@ -7,6 +7,8 @@ from Key import *
 class IFT:
     def __init__(self, eblif_fileName):
         self.eblif_fileName = eblif_fileName
+        self.LUTLIFT_library_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', self.eblif_fileName.replace('.eblif', '_LUTLIFT_lib.v'))
+        self.instance_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', self.eblif_fileName.replace('.eblif', '.v'))
         self.eblif = EBLIF(eblif_fileName)
         self.LUTs = self.eblif.LUTs
         self.input_names = self.eblif.input_names + [name + "_t" for name in self.eblif.input_names]
@@ -17,6 +19,12 @@ class IFT:
         self.name_map = dict(zip(self.input_names, self.vars))
         self.number_of_LUTs = len(self.LUTs)
         self.output_expressions = {}
+
+        with open(self.LUTLIFT_library_fileName, 'w') as f:
+            pass
+
+        with open(self.instance_fileName, 'w') as f:
+            pass
     
     def ift_logic_generation(self, lut: LUT):
         """
@@ -111,28 +119,19 @@ class IFT:
             Output: A string representing the original logic expression for the LUT
         """
         out = lut.result[::-1]
-        # print(f"LUT input names: {lut.input_names}")
-        # print(f"Name Map: {self.name_map}")
         input_vars = exprvars('o', len(lut.input_names))
         dictionary = dict(zip(lut.input_names[::-1], input_vars))
-        # print(f"Input Variables: {input_vars}")
         sop = truthtable(input_vars, out)
-        print(f"Original Truth Table: {sop}")
         expression = truthtable2expr(sop)
         expression = str(expression)
         for key, value in dictionary.items():
             expression = expression.replace(str(value), key)
-        # print(f"Original Expression: {expression}")
-        # print(f"Expression after variable substitution: {expression}")
         for key, value in self.output_expressions.items():
             if key in expression:
-                # print(f"Substituting {key} with {value} in expression: {expression}")
                 expression = expression.replace(str(key), value)
         expression = expression.replace("|", "Or").replace("&", "And")
-        # print(f"Expression after output substitution: {expression}")
         expression = expr(expression)
         expression = self.pretty(expression)
-        # print(f"Final Original Expression: {expression}")
         return expression
         
 
@@ -156,8 +155,6 @@ class IFT:
             minimal_s = minimal_s.replace(str(user_var), py_var)
         s = s.replace('Or', '|').replace('And', '&').replace('~', '~')
         minimal_s = minimal_s.replace('Or', '|').replace('And', '&').replace('~', '~')
-        # print(f"Expression before simplification: {s}")
-        # print(f"Expression after simplification: {minimal_s}")
         return minimal_s
     
     def to_verilog_expression(self, expr: str) -> str:
@@ -185,15 +182,13 @@ class IFT:
             print(f"Single term AND: {verilog_expr}")
         return verilog_expr
     
-    def to_verilog_file(self, lut_output: str, original_output: str, ift_output: str):
+    def to_verilog_module(self, lut_output: str, original_output: str, ift_output: str):
         """
         Generate a Verilog file containing the original and IFT expressions for a given LUT
         Input: The output name of the LUT, the original expression, and the IFT expression
         Output: A Verilog file written to the output directory, containing a module with the original and IFT logic for each LUT
         """
-        out_dir = os.path.join(os.path.dirname(__file__), '..', 'out')
-        file_name = os.path.join(out_dir, self.eblif_fileName.replace('.eblif', '.v'))
-        with open(file_name, 'a') as f:
+        with open(self.LUTLIFT_library_fileName, 'a') as f:
             f.write(f"module LUT_{lut_output}(\n")
             f.write("\tinput ")
             for input_name in self.input_names:
@@ -208,30 +203,57 @@ class IFT:
             f.write("endmodule\n")
             f.write("\n\n" + "//" + "="*80 + "\n\n")
         return
-
+    
+    
 
     def run(self):
-        i = 1
+        count = 1
+        with open(self.instance_fileName, 'a') as f:
+            f.write(f"module {self.eblif_fileName.replace('.eblif', '')}(\n")
+            f.write("\tinput ")
+            for input_name in self.input_names:
+                f.write(f"{input_name}, ")
+            f.write("\n")
+            f.write(f"\toutput ")
+            for i in range(len(self.output_names) - 1):
+                f.write(f"{self.output_names[i]}, ")
+            f.write(f"{self.output_names[-1]}\n")
+            f.write(");\n\n")
+
         for lut in self.LUTs:
-            print(f"LUT #{i}")
+            print(f"LUT #{count}")
+            print(f"Input Names: {lut.input_names}")
+            print(f"Output Name: {lut.output_name}")
             hexa = hex(int(lut.result, 2)).replace("0x", "")
+            print(f"Truth Table: {lut.result} → Hexadecimal: {hexa}")
             implicants = self.ift_logic_generation(lut)
             # print(f"Implicants: {sorted(implicants)}")
             function = self.translateImplicants(implicants)
-            print(f"Generated IFT Expression: {function}, type: {type(function)}")
+            # print(f"Generated IFT Expression: {function}, type: {type(function)}")
             self.output_expressions[lut.output_name] = self.get_original_expression(lut)
             self.output_expressions[lut.output_name + "_t"] = self.pretty(function)
             print(f"Original Expression: {lut.output_name} = {self.output_expressions[lut.output_name]}")
             print(f"IFT Expression: {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}")
-            self.to_verilog_file(hexa, lut.output_name, lut.output_name + "_t")
+            self.to_verilog_module(hexa, lut.output_name, lut.output_name + "_t")
 
-            i = i + 1
+            with open(self.instance_fileName, 'a') as f:
+                f.write(f"\tLUT_{hexa} LUT_{count}(\n")
+                for input_name in self.input_names:
+                    f.write(f"\t\t.{input_name}({input_name}),\n")
+                f.write(f"\t\t.{lut.output_name}({lut.output_name}),\n")
+                f.write(f"\t\t.{lut.output_name}_t({lut.output_name}_t)\n")
+                f.write("\t);\n\n")
+
+            count = count + 1
             print("\n========================================================================================\n")
+        
+        with open(self.instance_fileName, 'a') as f:
+            f.write("endmodule\n")
 
     
     
 if __name__ == "__main__":
-    eblif_fileName = "and.eblif"
+    eblif_fileName = "FA_1bit.eblif"
     ift = IFT(eblif_fileName)
     ift.run()
         

@@ -1,41 +1,28 @@
-module LUT_e8(
+module FA_1bit(
 	input A, B, Cin, A_t, B_t, Cin_t, 
-	output Cout, Cout_t
+	output Cout, Sum, Cout_t, Sum_t
 );
 
-	assign Cout = (Cin & B) 
-		| (A & Cin) 
-		| (A & B);
+	LUT_e8 LUT_1(
+		.A(A),
+		.B(B),
+		.Cin(Cin),
+		.A_t(A_t),
+		.B_t(B_t),
+		.Cin_t(Cin_t),
+		.Cout(Cout),
+		.Cout_t(Cout_t)
+	);
 
-	assign Cout_t = (B_t & ~A & Cin) 
-		| (A_t & B_t) 
-		| (B_t & Cin_t) 
-		| (Cin_t & A & ~B) 
-		| (Cin_t & ~A & B) 
-		| (B_t & A & ~Cin) 
-		| (A_t & Cin_t) 
-		| (A_t & Cin & ~B) 
-		| (A_t & ~Cin & B);
-
-endmodule
-
-
-//================================================================================
-
-module LUT_96(
-	input A, B, Cin, A_t, B_t, Cin_t, 
-	output Sum, Sum_t
-);
-
-	assign Sum = (A & Cin & B) 
-		| (~A & ~Cin & B) 
-		| (A & ~Cin & ~B) 
-		| (~A & Cin & ~B);
-
-	assign Sum_t = A_t | B_t | Cin_t;
+	LUT_96 LUT_2(
+		.A(A),
+		.B(B),
+		.Cin(Cin),
+		.A_t(A_t),
+		.B_t(B_t),
+		.Cin_t(Cin_t),
+		.Sum(Sum),
+		.Sum_t(Sum_t)
+	);
 
 endmodule
-
-
-//================================================================================
-

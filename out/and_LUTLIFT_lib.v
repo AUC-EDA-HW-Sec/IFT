@@ -3,11 +3,11 @@ module LUT_8(
 	output c, c_t
 );
 
-	assign c = b & a;
+	assign c = a & b;
 
-	assign c_t = (b_t & a) 
+	assign c_t = (a & b_t) 
 		| (a_t & b) 
-		| (a_t & b_t);
+		| (b_t & a_t);
 
 endmodule
 
