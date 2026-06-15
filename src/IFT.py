@@ -7,8 +7,8 @@ from Key import *
 class IFT:
     def __init__(self, eblif_fileName):
         self.eblif_fileName = eblif_fileName
-        self.LUTLIFT_library_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', self.eblif_fileName.replace('.eblif', '_LUTLIFT_lib.v'))
-        self.instance_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', self.eblif_fileName.replace('.eblif', '.v'))
+        self.LUTLIFT_library_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', 'LUTLIFT_lib', self.eblif_fileName.replace('.eblif', '_LUTLIFT_lib.v'))
+        self.instance_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', 'top_module', self.eblif_fileName.replace('.eblif', '.v'))
         self.eblif = EBLIF(eblif_fileName)
         self.LUTs = self.eblif.LUTs
         self.input_names = self.eblif.input_names + [name + "_t" for name in self.eblif.input_names]
@@ -17,25 +17,31 @@ class IFT:
         self.output_names = [name.replace("[", "").replace("]", "") for name in self.output_names]
         self.vars = exprvars('v', len(self.input_names))
         self.name_map = dict(zip(self.input_names, self.vars))
-        self.number_of_LUTs = len(self.LUTs)
         self.output_expressions = {}
 
-        with open(self.LUTLIFT_library_fileName, 'w') as f:
+        # Clear the files before appending new modules
+        with open(self.LUTLIFT_library_fileName, 'w') as f: 
             pass
 
         with open(self.instance_fileName, 'w') as f:
             pass
     
-    def ift_logic_generation(self, lut: LUT):
+
+    def ift_logic_generation(self, lut: LUT) -> set:
         """
         Generate IFT logic for a given LUT
         Application of the IFT generation algorithm from "LUT Level Information Flow Tracking for FPGA Design Security Verification" by Zhang et al.
+
         Input: LUT object containing the LUT's output truth table and input names
+            (e.g., input_names=["A", "B"], result="1000")
+
         Logic:
             - For each pair of output values in the LUT's truth table, identify pairs that differ (i.e., one is 0 and the other is 1)
             - For each differing pair, determine the input combination (truth_str) that produces the first output value, and the input combination (ift_str) that produces the second output value
             - Combine truth_str and ift_str to form a bit-level implicant representing a condition under which the output changes (i.e., an IFT condition)
+
         Output: Set of implicants representing the IFT logic for the LUT
+            (e.g., {"0011", "0110", "1000"})
         """
         init_vector = lut.result[::-1]
         n = len(lut.input_names)
@@ -43,8 +49,6 @@ class IFT:
         size = len(init_vector)
         truth_str = ''
         ift_str = ''
-        # print(f"Initial Vector: {init_vector}")
-        # print(f"n: {n}, size: {size}")
         for i in range(0, size):
             for j in range(i + 1, size):
                 if init_vector[i] != init_vector[j]:
@@ -53,7 +57,6 @@ class IFT:
                     flipaddr = j ^ addr
                     truth_str = ''
                     ift_str = ''
-                    #print(f"Mask: {mask}, Addr: {addr}, FlipAddr: {flipaddr}")
                     while mask > 0:
                         if addr & mask:
                             truth_str = truth_str + '1'
@@ -63,60 +66,73 @@ class IFT:
                             ift_str = ift_str + '1'
                         else:
                             ift_str = ift_str + '0'
-                        #print(f"Truth Str: {truth_str}, IFT Str: {ift_str}")
                         mask = mask // 2
                     if truth_str and ift_str:
-                        # print(f"Add Implicant: {truth_str + ift_str}")
                         implicants.add(truth_str + ift_str)
-        # print(f"Implicants: {sorted(implicants)}")
         self.translateImplicants(implicants)
         return implicants
     
+
     def translate(self, bit_implicant: str) -> str:
         """
         Translate a bit-level implicant into a variable-level expression
-        Input: A string representing the bit-level implicant (e.g., "1010")
+
+        Input: A string representing the bit-level implicant 
+            (e.g., "1001")
+
         Logic: For each bit and its corresponding taint bit:
-            - If both are '1', include the original variable in the expression (e.g., "A")
-            - If original is '1' and taint is '0', include the original variable (e.g., "A")
-            - If original is '0' and taint is '1', include the taint variable (e.g., "A_t")
-            - If both are '0', include the negation of the original variable (e.g., "~A")
-        Output: A string representing the variable-level expression (e.g., "A_t & ~B")
+            - If the taint bit is 1, include the corresponding variable in the expression (e.g., "A_t")
+            - If the taint bit is 0 and the original bit is 1, include the original variable (e.g., "A")
+            - If the taint bit is 0 and the original bit is 0, include the negation of the original variable (e.g., "~A")
+
+        Output: A string representing the variable-level expression 
+            (e.g., "A & B_t")
         """
         variable_implicant = ""
         for i in range(len(bit_implicant)//2):
             original = i
             tainted = i + len(bit_implicant)//2
-            if bit_implicant[tainted] == '1':
+            if bit_implicant[tainted] == '1': # Tainted variable is 1, include the tainted variable in the expression
                 variable_implicant += self.input_names[tainted] + " & "
-            elif bit_implicant[original] == '1':
+            elif bit_implicant[original] == '1': # Tainted variable is 0 and original variable is 1, include the original variable in the expression
                 variable_implicant += self.input_names[original] + " & "
-            else:
+            else: # Tainted variable is 0 and original variable is 0, include the negation of the original variable in the expression
                 variable_implicant += "~" + self.input_names[original] + " & "
         variable_implicant = variable_implicant[:-3]
-        # print(f"Implicant: {bit_implicant} → variable_implicant: {variable_implicant}")
         return variable_implicant
+
 
     def translateImplicants(self, implicants: set) -> expr:
         """
             Combine all variable-level implicants into a single expression representing the IFT logic for the LUT
-            Input: A set of bit-level implicants
+
+            Input: A set of bit-level implicants 
+                (e.g., {"0011", "0110", "1001"})
+
             Logic: For each implicant, translate it to a variable-level expression and combine them using OR
+
             Output: A string representing the combined IFT expression for the LUT
+                (e.g., "Or(And(A_t, B_t), And(A, B_t), And(A_t, B))")
         """
         function = ""
         for implicant in implicants:
             function = function + self.translate(implicant) + " | "
-        function = function[:-3]
+        function = function[:-3] # Remove the trailing " | "
         function = expr(function)
         return function
     
-    def get_original_expression(self, lut):
+
+    def get_original_expression(self, lut: LUT) -> str:
         """
             Generate the original logic expression for the LUT based on its truth table
-            Input: A LUT object containing the LUT's output truth table and input names
-            Logic: Use the pyeda library to convert the LUT's truth table into a logic expression
+
+            Input: A LUT object containing the LUT's output truth table and input names 
+                (e.g., input_names=["A", "B"], result="1000")
+
+            Logic: Use the pyeda library to convert the LUT's truth table into a logic expression 
+                
             Output: A string representing the original logic expression for the LUT
+                (e.g., "&(A, B)")
         """
         out = lut.result[::-1]
         input_vars = exprvars('o', len(lut.input_names))
@@ -124,9 +140,10 @@ class IFT:
         sop = truthtable(input_vars, out)
         expression = truthtable2expr(sop)
         expression = str(expression)
-        for key, value in dictionary.items():
-            expression = expression.replace(str(value), key)
-        for key, value in self.output_expressions.items():
+        for key, value in dictionary.items(): # Replace pyeda variable names with user-friendly names in the expression
+            if str(value) in expression:
+                expression = expression.replace(str(value), key)
+        for key, value in self.output_expressions.items(): # Substitute previously generated expressions if they are present in the current expression
             if key in expression:
                 expression = expression.replace(str(key), value)
         expression = expression.replace("|", "Or").replace("&", "And")
@@ -138,55 +155,75 @@ class IFT:
     def pretty(self, expr: expr)-> str:
         """
         Format a pyeda expression into a more readable string format
+
         Input: A pyeda expression object
+            (e.g., "Or(And(A_t, B), And(B_t, A_t), And(A, B_t))")
+
         Logic: Replace variable names with user-friendly names, and format the expression using standard logical operators
+
         Output: A formatted string representing the logic expression
+            (e.g., "|(&(A_t, B), &(B_t, A_t), &(A, B_t))")
         """
-        for key, value in self.output_expressions.items():
+        for key, value in self.output_expressions.items(): # Substitute previously generated expressions if they are present in the current expression
             if key in self.name_map:
                 sub = self.name_map[key]
                 expr = expr.compose({sub: value})
-        expr = expr.to_dnf()
-        minimal_expr, = espresso_exprs(expr)
-        s = str(expr)
+        expr = expr.to_dnf() # Convert the expression to Disjunctive Normal Form to simplify it before minimizing
+        minimal_expr, = espresso_exprs(expr) # Minimize the expression
         minimal_s = str(minimal_expr)
-        for py_var, user_var in self.name_map.items():
-            s = s.replace(str(user_var), py_var)
+        for py_var, user_var in self.name_map.items():  # Replace pyeda variable names with user-friendly names
             minimal_s = minimal_s.replace(str(user_var), py_var)
-        s = s.replace('Or', '|').replace('And', '&').replace('~', '~')
         minimal_s = minimal_s.replace('Or', '|').replace('And', '&').replace('~', '~')
         return minimal_s
     
+
     def to_verilog_expression(self, expr: str) -> str:
         """
         Convert a pyeda expression into a Verilog-compatible string format
-        Input: A pretty-printed expression string from the pyeda library
-        Logic: Replace logical operators with their Verilog equivalents, and format the expression accordingly
-        Output: A string representing the logic expression in Verilog syntax
+
+        Input: A pretty-printed expression string from the pyeda library 
+            (e.g., "|(&(B_t, A_t), &(A_t, ~B), &(~A, B_t))")
+
+        Logic: Replace logical operators with their Verilog equivalents, and format the expression accordingly 
+
+        Output: A string representing the logic expression in Verilog syntax 
+            (e.g., "B_t & A_t | A_t & ~B | ~A & B_t")
         """
         verilog_expr = expr
-        if verilog_expr[0] == '|':
+        if verilog_expr[0] == '|': # If the expression is a Sum of Products (SOP), split them and format each term separately
             verilog_expr = verilog_expr.strip("|")
             verilog_expr = verilog_expr[1:-1]
             verilog_expr = verilog_expr.split("&")
             verilog_expr = [item for item in verilog_expr if item]
             verilog_expr = [item.replace("), ", ")") for item in verilog_expr]
-            if len(verilog_expr) > 1:
+            if len(verilog_expr) > 1: # If there are multiple terms, replace the AND operator with the Verilog equivalent and join them with OR
                 verilog_expr = [item.replace(", ", " & ") for item in verilog_expr]
                 verilog_expr = " \n\t\t| ".join(verilog_expr)
-            else:
+            else: # If there are no AND operators, just replace the OR operator with the Verilog equivalent
                 verilog_expr = verilog_expr[0].replace(", ", " | ")
-        else:
+        else: # If the expression is a single AND term, just replace the AND operator with the Verilog equivalent
             verilog_expr = verilog_expr[2:-1]
             verilog_expr = verilog_expr.replace(", ", " & ")
-            print(f"Single term AND: {verilog_expr}")
         return verilog_expr
     
-    def to_verilog_module(self, lut_output: str, original_output: str, ift_output: str):
+
+    def to_verilog_module(self, lut_output: str, original_output: str, ift_output: str) -> None:
         """
         Generate a Verilog file containing the original and IFT expressions for a given LUT
+
         Input: The output name of the LUT, the original expression, and the IFT expression
+
         Output: A Verilog file written to the output directory, containing a module with the original and IFT logic for each LUT
+            (e.g., "module LUT_3(
+                        input A, B, A_t, B_t,
+                        output O, O_t
+                    );
+                    
+                        assign O = A & ~B | ~A & B;
+                        
+                        assign O_t = B_t & A_t | A_t & ~B | ~A & B_t;
+                    endmodule"
+                )
         """
         with open(self.LUTLIFT_library_fileName, 'a') as f:
             f.write(f"module LUT_{lut_output}(\n")
@@ -206,7 +243,7 @@ class IFT:
     
     
 
-    def run(self):
+    def run(self) -> None:
         count = 1
         with open(self.instance_fileName, 'a') as f:
             f.write(f"module {self.eblif_fileName.replace('.eblif', '')}(\n")
@@ -221,15 +258,9 @@ class IFT:
             f.write(");\n\n")
 
         for lut in self.LUTs:
-            print(f"LUT #{count}")
-            print(f"Input Names: {lut.input_names}")
-            print(f"Output Name: {lut.output_name}")
             hexa = hex(int(lut.result, 2)).replace("0x", "")
-            print(f"Truth Table: {lut.result} → Hexadecimal: {hexa}")
             implicants = self.ift_logic_generation(lut)
-            # print(f"Implicants: {sorted(implicants)}")
             function = self.translateImplicants(implicants)
-            # print(f"Generated IFT Expression: {function}, type: {type(function)}")
             self.output_expressions[lut.output_name] = self.get_original_expression(lut)
             self.output_expressions[lut.output_name + "_t"] = self.pretty(function)
             print(f"Original Expression: {lut.output_name} = {self.output_expressions[lut.output_name]}")
@@ -253,7 +284,7 @@ class IFT:
     
     
 if __name__ == "__main__":
-    eblif_fileName = "FA_1bit.eblif"
+    eblif_fileName = "and.eblif"
     ift = IFT(eblif_fileName)
     ift.run()
         

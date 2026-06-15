@@ -5,17 +5,17 @@ module LUT_e8(
 
 	assign Cout = (B & Cin) 
 		| (A & Cin) 
-		| (B & A);
+		| (A & B);
 
 	assign Cout_t = (~A & B_t & Cin) 
 		| (A_t & B_t) 
 		| (Cin_t & B_t) 
-		| (~B & Cin_t & A) 
-		| (B & Cin_t & ~A) 
+		| (A & ~B & Cin_t) 
+		| (~A & B & Cin_t) 
 		| (A & B_t & ~Cin) 
-		| (A_t & Cin_t) 
-		| (A_t & ~B & Cin) 
-		| (A_t & B & ~Cin);
+		| (Cin_t & A_t) 
+		| (~B & A_t & Cin) 
+		| (B & A_t & ~Cin);
 
 endmodule
 
@@ -27,12 +27,12 @@ module LUT_96(
 	output Sum, Sum_t
 );
 
-	assign Sum = (B & A & Cin) 
-		| (B & ~A & ~Cin) 
-		| (~B & A & ~Cin) 
-		| (~B & ~A & Cin);
+	assign Sum = (A & B & Cin) 
+		| (~A & B & ~Cin) 
+		| (A & ~B & ~Cin) 
+		| (~A & ~B & Cin);
 
-	assign Sum_t = A_t | Cin_t | B_t;
+	assign Sum_t = Cin_t | A_t | B_t;
 
 endmodule
 
