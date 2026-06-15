@@ -11,11 +11,12 @@ class LUT:
     def getInputNames(self)-> list: # parses the input names from the .subckt line
         self.input_names = self.subckt.split()[2:-1]
         self.input_names = [self.input_names[i].split('=')[1] for i in range(len(self.input_names))]
+        self.input_names = [name.replace("[", "").replace("]", "") for name in self.input_names]
         return self.input_names
     
     def getOutputName(self)-> str: # parses the output name from the .subckt line
         self.output_name = self.subckt.split()[-1]
-        self.output_name = self.output_name.split("=")[1]
+        self.output_name = self.output_name.split("=")[1].replace("[", "").replace("]", "")
         return self.output_name
     
     def getOutput(self)-> list: # parses the LUT output from the .param line

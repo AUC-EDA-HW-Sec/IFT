@@ -1,4 +1,5 @@
 from LUT import LUT
+import os
 
 class EBLIF:
     def __init__(self, fileName: str):
@@ -9,7 +10,8 @@ class EBLIF:
         self.parseFile()
 
     def parseFile(self) -> list: # parses the EBLIF file to extract LUTs
-        with open(self.fileName, 'r') as file:
+        examples_dir = os.path.join(os.path.dirname(__file__), '..', 'examples', self.fileName)
+        with open(examples_dir, 'r') as file:
             for line in file:
                 if line.startswith(".inputs"):
                     inputs = line.strip().split()[1:]
@@ -22,7 +24,7 @@ class EBLIF:
                         param = None
                     lut = LUT(subckt, param)
                     self.LUTs.append(lut)
-                    self.output_names.extend(lut.output_name)
+                    self.output_names.extend([lut.output_name])
         return self.LUTs
     
 if __name__ == "__main__":
