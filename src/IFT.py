@@ -7,7 +7,6 @@ from Key import *
 class IFT:
     def __init__(self, eblif_fileName):
         self.eblif_fileName = eblif_fileName
-        self.LUTLIFT_library_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', 'LUTLIFT_lib', self.eblif_fileName.replace('.eblif', '_LUTLIFT_lib.v'))
         self.instance_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', 'top_module', self.eblif_fileName.replace('.eblif', '.v'))
         self.eblif = EBLIF(eblif_fileName)
         self.LUTs = self.eblif.LUTs
@@ -20,9 +19,6 @@ class IFT:
         self.output_expressions = {}
 
         # Clear the files before appending new modules
-        with open(self.LUTLIFT_library_fileName, 'w') as f: 
-            pass
-
         with open(self.instance_fileName, 'w') as f:
             pass
     
@@ -93,11 +89,11 @@ class IFT:
             original = i
             tainted = i + len(bit_implicant)//2
             if bit_implicant[tainted] == '1': # Tainted variable is 1, include the tainted variable in the expression
-                variable_implicant += self.input_names[tainted] + " & "
+                variable_implicant += f"I{tainted} & "
             elif bit_implicant[original] == '1': # Tainted variable is 0 and original variable is 1, include the original variable in the expression
-                variable_implicant += self.input_names[original] + " & "
+                variable_implicant += f"I{original} & "
             else: # Tainted variable is 0 and original variable is 0, include the negation of the original variable in the expression
-                variable_implicant += "~" + self.input_names[original] + " & "
+                variable_implicant += f"~I{original} & "
         variable_implicant = variable_implicant[:-3]
         return variable_implicant
 
@@ -140,9 +136,8 @@ class IFT:
         sop = truthtable(input_vars, out)
         expression = truthtable2expr(sop)
         expression = str(expression)
-        for key, value in dictionary.items(): # Replace pyeda variable names with user-friendly names in the expression
-            if str(value) in expression:
-                expression = expression.replace(str(value), key)
+        for var in self.vars:  # Replace pyeda variable names with user-friendly names
+            expression = expression.replace("o", "I").replace("[", "").replace("]", "")
         for key, value in self.output_expressions.items(): # Substitute previously generated expressions if they are present in the current expression
             if key in expression:
                 expression = expression.replace(str(key), value)
@@ -171,8 +166,9 @@ class IFT:
         expr = expr.to_dnf() # Convert the expression to Disjunctive Normal Form to simplify it before minimizing
         minimal_expr, = espresso_exprs(expr) # Minimize the expression
         minimal_s = str(minimal_expr)
-        for py_var, user_var in self.name_map.items():  # Replace pyeda variable names with user-friendly names
-            minimal_s = minimal_s.replace(str(user_var), py_var)
+        for var in self.vars:  # Replace pyeda variable names with user-friendly names
+            if str(var) in minimal_s:
+                minimal_s = minimal_s.replace(str(var), str(var).replace("v", "I")).replace("[", "").replace("]", "")
         minimal_s = minimal_s.replace('Or', '|').replace('And', '&').replace('~', '~')
         return minimal_s
     
@@ -225,18 +221,21 @@ class IFT:
                     endmodule"
                 )
         """
-        with open(self.LUTLIFT_library_fileName, 'a') as f:
+        path = os.path.join(os.path.dirname(__file__), '..', 'out', 'LUTLIFT_lib', f"LUT_{lut_output}.v")
+        if os.path.exists(path):
+            return
+        with open(path, 'a') as f:
             f.write(f"module LUT_{lut_output}(\n")
             f.write("\tinput ")
-            for input_name in self.input_names:
-                f.write(f"{input_name}, ")
+            for i in range(len(self.input_names)):
+                f.write(f"I{i}, ")
             f.write("\n")
-            f.write(f"\toutput {original_output}, {ift_output}\n")
+            f.write(f"\toutput O, O_t\n")
             f.write(");\n\n")
             verilog_original_expr = self.to_verilog_expression(self.output_expressions[original_output])
             verilog_ift_expr = self.to_verilog_expression(self.output_expressions[ift_output])
-            f.write(f"\tassign {original_output} = {verilog_original_expr};\n\n")
-            f.write(f"\tassign {ift_output} = {verilog_ift_expr};\n\n")
+            f.write(f"\tassign O = {verilog_original_expr};\n\n")
+            f.write(f"\tassign O_t = {verilog_ift_expr};\n\n")
             f.write("endmodule\n")
             f.write("\n\n" + "//" + "="*80 + "\n\n")
         return
@@ -269,10 +268,10 @@ class IFT:
 
             with open(self.instance_fileName, 'a') as f:
                 f.write(f"\tLUT_{hexa} LUT_{count}(\n")
-                for input_name in self.input_names:
-                    f.write(f"\t\t.{input_name}({input_name}),\n")
-                f.write(f"\t\t.{lut.output_name}({lut.output_name}),\n")
-                f.write(f"\t\t.{lut.output_name}_t({lut.output_name}_t)\n")
+                for i in range(len(self.input_names)):
+                    f.write(f"\t\t.I{i}({self.input_names[i]}),\n")
+                f.write(f"\t\t.O({lut.output_name}),\n")
+                f.write(f"\t\t.O_t({lut.output_name}_t)\n")
                 f.write("\t);\n\n")
 
             count = count + 1

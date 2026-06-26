@@ -4,12 +4,12 @@ module or(
 );
 
 	LUT_e LUT_1(
-		.a(a),
-		.b(b),
-		.a_t(a_t),
-		.b_t(b_t),
-		.c(c),
-		.c_t(c_t)
+		.I0(a),
+		.I1(b),
+		.I2(a_t),
+		.I3(b_t),
+		.O(c),
+		.O_t(c_t)
 	);
 
 endmodule
