@@ -1,3 +1,4 @@
+import subprocess
 from itertools import product
 from pyeda.inter import expr, exprvars, And, Or, espresso_exprs, truthtable, truthtable2expr
 from EBLIF import *
@@ -8,10 +9,15 @@ class IFT:
     def __init__(self, eblif_fileName):
         self.eblif_fileName = eblif_fileName
         self.instance_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', 'top_module', self.eblif_fileName.replace('.eblif', '.v'))
+        self.default_luts_dirName = os.path.join(os.path.dirname(__file__), '..', 'out', 'default_LUTs')
         self.eblif = EBLIF(eblif_fileName)
         self.LUTs = self.eblif.LUTs
         self.input_names = self.eblif.input_names + [name + "_t" for name in self.eblif.input_names]
         self.output_names = self.eblif.output_names + [name + "_t" for name in self.eblif.output_names]
+
+        self.original_inputs = self.eblif.input_names
+        self.original_outputs = self.eblif.output_names
+
         self.input_names = [name.replace("[", "").replace("]", "") for name in self.input_names]
         self.output_names = [name.replace("[", "").replace("]", "") for name in self.output_names]
         self.vars = exprvars('v', len(self.input_names))
@@ -246,7 +252,34 @@ class IFT:
     
     
 
-    def run(self) -> None:
+    def generate_top_module(self):
+        # Write the original and IFT modules for each LUT to the output directory
+        default_lut_module = [False] * 6
+        for lut in self.LUTs:
+            hexa = hex(int(lut.result, 2)).replace("0x", "")
+            implicants = self.ift_logic_generation(lut)
+            function = self.translateImplicants(implicants)
+            self.output_expressions[lut.output_name] = self.get_original_expression(lut)
+            self.output_expressions[lut.output_name + "_t"] = self.pretty(function)
+            print(f"Original Expression: {lut.output_name} = {self.output_expressions[lut.output_name]}")
+            print(f"IFT Expression: {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}")
+            tainted = self.to_verilog_module(hexa, lut.output_name + "_t")
+            lut_inputs = int(len(self.input_names)/2)
+            lut_length = int(2**(lut_inputs))
+            lut_module = ""
+            if not default_lut_module[lut_inputs]:
+                with open(os.path.join(self.default_luts_dirName, f"LUT{lut_inputs}.v"), 'r') as f:
+                    lut_module = f.read()
+                default_lut_module[lut_inputs] = True
+            with open(self.instance_fileName, 'a') as f:
+                if lut_module:
+                    f.write(lut_module)
+                    f.write("\n\n" + "//" + "=" * 80 + "\n\n")
+                f.write(tainted)
+                f.write("\n\n" + "//" + "=" * 80 + "\n\n")
+                
+
+        # Write the top module header
         count = 1
         with open(self.instance_fileName, 'a') as f:
             f.write(f"module {self.eblif_fileName.replace('.eblif', '')}(\n")
@@ -260,16 +293,9 @@ class IFT:
             f.write(f"{self.output_names[-1]}\n")
             f.write(");\n\n")
 
+        # Generate IFT logic for each LUT and write the corresponding Verilog instantiations
         for lut in self.LUTs:
             hexa = hex(int(lut.result, 2)).replace("0x", "")
-            implicants = self.ift_logic_generation(lut)
-            function = self.translateImplicants(implicants)
-            self.output_expressions[lut.output_name] = self.get_original_expression(lut)
-            self.output_expressions[lut.output_name + "_t"] = self.pretty(function)
-            print(f"Original Expression: {lut.output_name} = {self.output_expressions[lut.output_name]}")
-            print(f"IFT Expression: {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}")
-            self.to_verilog_module(hexa, lut.output_name + "_t")
-
             lut_inputs = int(len(self.input_names)/2)
             lut_length = int(2**(lut_inputs))
 
@@ -288,15 +314,57 @@ class IFT:
                 f.write(f"\t\t.O_t({lut.output_name}_t)\n")
                 f.write("\t);\n\n")
             count = count + 1
-            print("\n========================================================================================\n")
         
+        # Write the formal assertions to the top module to ensure that taint does not reach any primary output
         with open(self.instance_fileName, 'a') as f:
-            f.write("endmodule\n")
+            f.write("\n`ifdef FORMAL\n")
+            f.write("\talways @(*) begin\n")
+            
+            for target_input in self.original_inputs:
+                f.write(f"\t\t`ifdef TAINT_{target_input}\n")
+                f.write(f"\t\t\tassume ({target_input}_t == 1'b1);\n")
+                for other_input in self.original_inputs:
+                    if other_input != target_input:
+                        f.write(f"\t\t\tassume ({other_input}_t == 1'b0);\n")
+                f.write("\t\t`endif\n")
+            
+            f.write("\n\t\t// Global Assertions: Taint must never reach any primary output\n")
+            for out_name in self.original_outputs:
+                f.write(f"\t\tassert ({out_name}_t == 1'b0);\n")
+                
+            f.write("\tend\n")
+            f.write("`endif\n\n")
+            f.write("endmodule\n\n")
+        return 
+    
+# def run(self):
+#     top_module_name = self.instance_fileName.replace('.eblif', '')
+#     sby_path = os.path.join(self.out_dir, "assertion1.sby")
+#     with open(sby_path, 'w') as f:
+#         f.write("[tasks]\n")
+#         for target_input in self.original_inputs:
+#             f.write(f"check_{target_input}\n")
+            
+#         f.write("\n[options]\nmode bmc\ndepth 2\n\n[engines]\nsmtbmc\n\n[script]\n")
+#         for target_input in self.original_inputs:
+#             f.write(f"check_{target_input}: read -formal -DTAINT_{target_input} {top_module_name}.v\n")
+#         f.write(f"prep -top {top_module_name}\n\n[files]\n{top_module_name}.v\n")
 
-    
-    
+#     print("-" * 60)
+#     try:
+#         result = subprocess.run(
+#             ["sby", "-f", "formal.sby"], 
+#             cwd=self.out_dir, 
+#             capture_output=True, 
+#             text=True
+#         )
+#         # Print the summary output from the engine
+#         print(result.stdout)
+#     except FileNotFoundError:
+#         print("[ERROR] SymbiYosys ('sby') not found in PATH. Make sure 'export PATH=/opt/oss-cad-suite/bin:$PATH' is active.")
+
 if __name__ == "__main__":
-    eblif_fileName = "or.eblif"
+    eblif_fileName = "FA_1bit.eblif"
     ift = IFT(eblif_fileName)
-    ift.run()
+    ift.generate_top_module()
         
