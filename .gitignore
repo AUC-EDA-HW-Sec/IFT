@@ -212,3 +212,7 @@ __marimo__/
 *.out
 .vscode/
 .DS_Store
+
+# Ignore the specific sby folder
+out/sby/
+sby/
