@@ -212,11 +212,9 @@ class IFT:
         Output: A Verilog file written to the output directory, containing a module with the original and IFT logic for each LUT
             (e.g., "module LUT_3(
                         input A, B, A_t, B_t,
-                        output O, O_t
+                        output O_t
                     );
-                    
-                        assign O = A & ~B | ~A & B;
-                        
+                                            
                         assign O_t = B_t & A_t | A_t & ~B | ~A & B_t;
                     endmodule"
                 )
@@ -230,11 +228,12 @@ class IFT:
             for i in range(len(self.input_names)):
                 f.write(f"I{i}, ")
             f.write("\n")
-            f.write(f"\toutput O, O_t\n")
+            # f.write(f"\toutput O, O_t\n")
+            f.write(f"\toutput O_t\n")
             f.write(");\n\n")
-            verilog_original_expr = self.to_verilog_expression(self.output_expressions[original_output])
+            # verilog_original_expr = self.to_verilog_expression(self.output_expressions[original_output])
             verilog_ift_expr = self.to_verilog_expression(self.output_expressions[ift_output])
-            f.write(f"\tassign O = {verilog_original_expr};\n\n")
+            # f.write(f"\tassign O = {verilog_original_expr};\n\n")
             f.write(f"\tassign O_t = {verilog_ift_expr};\n\n")
             f.write("endmodule\n")
             f.write("\n\n" + "//" + "="*80 + "\n\n")
@@ -266,13 +265,24 @@ class IFT:
             print(f"IFT Expression: {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}")
             self.to_verilog_module(hexa, lut.output_name, lut.output_name + "_t")
 
+            lut_inputs = int(len(self.input_names)/2)
+            lut_length = int(2**(lut_inputs))
+
             with open(self.instance_fileName, 'a') as f:
-                f.write(f"\tLUT_{hexa} LUT_{count}(\n")
+                f.write(f"\tLUT{lut_inputs} #(.INIT({lut_length}'b{lut.result})) LUT_{count} (\n")
+                for i in range(lut_inputs):
+                    f.write(f"\t\t.I{i}({self.input_names[i]}),\n")
+                f.write(f"\t\t.O({lut.output_name})\n")
+                f.write("\t);\n\n")
+
+                f.write(f"\tLUT_{hexa} LUT_{count}_t(\n")
                 for i in range(len(self.input_names)):
                     f.write(f"\t\t.I{i}({self.input_names[i]}),\n")
-                f.write(f"\t\t.O({lut.output_name}),\n")
+                # f.write(f"\t\t.O({lut.output_name}),\n")
                 f.write(f"\t\t.O_t({lut.output_name}_t)\n")
                 f.write("\t);\n\n")
+
+
 
             count = count + 1
             print("\n========================================================================================\n")
@@ -283,7 +293,7 @@ class IFT:
     
     
 if __name__ == "__main__":
-    eblif_fileName = "and.eblif"
+    eblif_fileName = "FA_1bit.eblif"
     ift = IFT(eblif_fileName)
     ift.run()
         
