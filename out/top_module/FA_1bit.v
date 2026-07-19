@@ -98,9 +98,13 @@ module FA_1bit(
 			assume (B_t == 1'b0);
 		`endif
 
-		// Global Assertions: Taint must never reach any primary output
-		assert (Cout_t == 1'b0);
-		assert (Sum_t == 1'b0);
+		// Isolated Output Assertions
+		`ifdef CHECK_Cout
+			assert (Cout_t == 1'b0);
+		`endif
+		`ifdef CHECK_Sum
+			assert (Sum_t == 1'b0);
+		`endif
 	end
 `endif
 

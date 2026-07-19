@@ -1,8 +1,0 @@
-# running in and_check_a/src/
-read -formal -DTAINT_a and.v
-prep -top and
-
-hierarchy -smtcheck
-rename -witness
-write_jny -no-connections ../model/design.json
-write_rtlil ../model/design.il

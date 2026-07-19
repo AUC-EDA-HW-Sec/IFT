@@ -1,3 +1,4 @@
+import os
 import subprocess
 from itertools import product
 from unittest import result
@@ -345,81 +346,81 @@ class IFT:
                         f.write(f"\t\t\tassume ({other_input}_t == 1'b0);\n")
                 f.write("\t\t`endif\n")
             
-            f.write("\n\t\t// Global Assertions: Taint must never reach any primary output\n")
+            f.write("\n\t\t// Isolated Output Assertions\n")
             for out_name in self.original_outputs:
-                f.write(f"\t\tassert ({out_name}_t == 1'b0);\n")
+                f.write(f"\t\t`ifdef CHECK_{out_name}\n")
+                f.write(f"\t\t\tassert ({out_name}_t == 1'b0);\n")
+                f.write("\t\t`endif\n")
                 
             f.write("\tend\n")
             f.write("`endif\n\n")
             f.write("endmodule\n\n")
         return 
-    
+  
+
     def run(self):
-        self.generate_top_module()
-        
-        module_name = self.eblif_fileName.replace('.eblif', '')
-
-        sby_fileName = f"{module_name}.sby"
-        sby_path = os.path.join(self.sby_dir, sby_fileName)
-
-        with open(sby_path, 'w') as f:
-            f.write("[tasks]\n")
-            for target_input in self.original_inputs:
-                f.write(f"check_{target_input}\n")
-                
-            f.write("\n[options]\nmode bmc\ndepth 2\n\n[engines]\nsmtbmc\n\n[script]\n")
-            for target_input in self.original_inputs:
-                f.write(f"check_{target_input}: read -formal -DTAINT_{target_input} {module_name}.v\n")
-
-            f.write(f"prep -top {module_name}\n\n[files]\n{self.instance_fileName}\n")
-
-
-        try:
-            result = subprocess.run(
-                ["sby", "-f", sby_fileName], 
-                cwd=self.sby_dir, 
-                capture_output=True, 
-                text=True
-            )
+            self.generate_top_module()
             
-            print("\n=========================== IFT VERIFICATION RESULTS ===========================")
-            for line in result.stdout.splitlines():
-                if "DONE" in line or "The following tasks failed" in line:
-                    print(line)
-            
-            has_failures = False
-            i = 1
-            for target_input in self.original_inputs:
-                task_folder = f"{module_name}_check_{target_input}"
-                task_dir = os.path.join(self.sby_dir, task_folder)
-                
-                tb_path = os.path.join(task_dir, "engine_0", "trace_tb.v")
-                vcd_path = os.path.join(task_dir, "engine_0", "trace.vcd")
-                
-                if os.path.exists(tb_path):
-                    has_failures = True
-                    print(f"\n{i}: Task 'check_{target_input}' failed for:")
-                    i += 1
-                    # print(f"    -> Verilog Testbench Stimulus: {tb_path}")
-                    # print(f"    -> GTKWave Waveform File     : {vcd_path}")
+            module_name = self.eblif_fileName.replace('.eblif', '')
+            sby_filename = f"{module_name}.sby"
+            sby_path = os.path.join(self.sby_dir, sby_filename)
+
+            with open(sby_path, 'w') as f:
+                f.write("[tasks]\n")
+
+                for target_input, target_output in product(self.original_inputs, self.original_outputs):
+                    f.write(f"check_{target_input}_to_{target_output}\n")
                     
-                    # Print out a snippet of the stimulus assignments directly from the generated testbench
-                    try:
-                        with open(tb_path, 'r') as tb_f:
-                            for tb_line in tb_f:
-                                if ("=" in tb_line or "<=" in tb_line) and not any(k in tb_line for k in ["initial", "begin", "clk", "clock", "cycle"]):
-                                    print(f"\t{tb_line.strip().replace(';', '').replace('PI_', '')}")
-                    except Exception:
-                        pass
-                        
-            if not has_failures:
-                print("All tasks successfully PASSED! No counterexamples generated.")
+                f.write("\n[options]\nmode bmc\ndepth 2\n\n[engines]\nsmtbmc\n\n[script]\n")
+                for target_input, target_output in product(self.original_inputs, self.original_outputs):
+                    f.write(f"check_{target_input}_to_{target_output}: read -formal -DTAINT_{target_input} -DCHECK_{target_output} {module_name}.v\n")
+                f.write(f"prep -top {module_name}\n\n[files]\n{self.instance_fileName}\n")
 
-            if result.stderr:
-                print("\n[ENGINE ERROR LOGS]:\n", result.stderr)
-        except FileNotFoundError:
-            print("[ERROR] SymbiYosys ('sby') not found in PATH.")
-            
+            try:
+                result = subprocess.run(
+                    ["sby", "-f", sby_filename], 
+                    cwd=self.sby_dir,
+                    capture_output=True, 
+                    text=True
+                )
+                
+                print("\n=========================== IFT VERIFICATION RESULTS ===========================\n")
+                for line in result.stdout.splitlines():
+                    if "DONE" in line:
+                        print(line)
+                
+                has_failures = False
+                i = 1
+                print("\n")
+
+                for target_input, target_output in product(self.original_inputs, self.original_outputs):
+                    task_folder = f"{module_name}_check_{target_input}_to_{target_output}"
+                    task_dir = os.path.join(self.sby_dir, task_folder)
+                    tb_path = os.path.join(task_dir, "engine_0", "trace_tb.v")
+                    
+                    if os.path.exists(tb_path):
+                        has_failures = True
+                        print(f"{i}: Task 'check_{target_input}_to_{target_output}' failed for:")
+                        i += 1
+                        # Output the assignments causing this pathway to leak
+                        try:
+                            with open(tb_path, 'r') as tb_f:
+                                for tb_line in tb_f:
+                                    if ("=" in tb_line or "<=" in tb_line) and not any(k in tb_line for k in ["initial", "begin", "clk", "clock", "cycle"]):
+                                        print(f"\t{tb_line.strip().replace(';', '').replace('PI_', '')}")
+                            print("\n")
+                        except Exception:
+                            pass
+                            
+                if not has_failures:
+                    print("Secure layout. No information flows out directly to any primary output ports.")
+                
+                if result.stderr:
+                    print("\n[ENGINE ERROR LOGS]:\n", result.stderr)
+            except FileNotFoundError:
+                print("[ERROR] SymbiYosys ('sby') not found in PATH.")
+
+
 if __name__ == "__main__":
     eblif_fileName = "FA_1bit.eblif"
     ift = IFT(eblif_fileName)

@@ -1,9 +1,0 @@
-initial
-
-state 0
-assume (= [A] false)
-assume (= [A_t] false)
-assume (= [B] false)
-assume (= [B_t] true)
-assume (= [Cin] false)
-assume (= [Cin_t] false)
