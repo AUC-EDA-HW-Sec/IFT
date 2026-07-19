@@ -1,0 +1,18 @@
+[tasks]
+check_a
+check_b
+
+[options]
+mode bmc
+depth 2
+
+[engines]
+smtbmc
+
+[script]
+check_a: read -formal -DTAINT_a and.v
+check_b: read -formal -DTAINT_b and.v
+prep -top and
+
+[files]
+/home/jacques/IFT/out/top_module/and.v

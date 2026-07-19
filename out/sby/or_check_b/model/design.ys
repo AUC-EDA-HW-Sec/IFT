@@ -1,0 +1,8 @@
+# running in or_check_b/src/
+read -formal -DTAINT_b or.v
+prep -top or
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

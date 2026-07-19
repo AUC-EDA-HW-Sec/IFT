@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-07-19T17:10:00" hostname="DESKTOP-UFHOULO" package="and" id="0" name="check_b" tests="1" errors="1" failures="0" time="0" skipped="0">
+<properties>
+<property name="os" value="Linux"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="ERROR"/>
+</properties>
+<testcase classname="check_b" name="check_b" time="0">
+<error type="ERROR"/>
+</testcase>
+<system-out>SBY 17:10:00 [and_check_a] Removing directory '/home/jacques/IFT/out/sby/and_check_a'.
+SBY 17:10:00 [and_check_b] Removing directory '/home/jacques/IFT/out/sby/and_check_b'.
+SBY 17:10:00 [and_check_b] Copy '/home/jacques/IFT/out/top_module/and.v' to '/home/jacques/IFT/out/sby/and_check_b/src/and.v'.
+SBY 17:10:00 [and_check_b] engine_0: smtbmc
+SBY 17:10:00 [and_check_b] base: starting process &quot;cd and_check_b/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 17:10:00 [and_check_b] base: and.v:25: ERROR: syntax error, unexpected TOK_PRIMITIVE, expecting TOK_ID
+SBY 17:10:00 [and_check_b] base: finished (returncode=1)
+SBY 17:10:00 [and_check_b] base: task failed. ERROR.
+SBY 17:10:00 [and_check_b] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 17:10:00 [and_check_b] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 17:10:00 [and_check_b] summary: engine_0 (smtbmc) did not return a status
+SBY 17:10:00 [and_check_b] summary: engine_0 did not produce any traces
+SBY 17:10:00 [and_check_b] DONE (ERROR, rc=16)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

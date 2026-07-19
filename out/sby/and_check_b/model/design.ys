@@ -1,0 +1,8 @@
+# running in and_check_b/src/
+read -formal -DTAINT_b and.v
+prep -top and
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

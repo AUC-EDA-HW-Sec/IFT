@@ -1,0 +1,8 @@
+# running in FA_1bit_check_Cin/src/
+read -formal -DTAINT_Cin FA_1bit.v
+prep -top FA_1bit
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

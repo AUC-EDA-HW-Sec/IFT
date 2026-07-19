@@ -6,11 +6,11 @@ module LUT_e8(
 	assign O_t = (I4 & ~I2 & I0) 
 		| (I3 & I5) 
 		| (I4 & I2 & ~I0) 
-		| (I4 & I5) 
+		| (I5 & I4) 
 		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (I5 & ~I1 & I0) 
-		| (I5 & I1 & ~I0) 
+		| (~I1 & I5 & I0) 
+		| (I1 & I5 & ~I0) 
 		| (I3 & I1 & ~I2);
 
 endmodule

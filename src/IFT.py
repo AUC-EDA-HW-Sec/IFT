@@ -1,5 +1,6 @@
 import subprocess
 from itertools import product
+from unittest import result
 from pyeda.inter import expr, exprvars, And, Or, espresso_exprs, truthtable, truthtable2expr
 from EBLIF import *
 from LUT import *
@@ -8,26 +9,37 @@ from Key import *
 class IFT:
     def __init__(self, eblif_fileName):
         self.eblif_fileName = eblif_fileName
-        self.instance_fileName = os.path.join(os.path.dirname(__file__), '..', 'out', 'top_module', self.eblif_fileName.replace('.eblif', '.v'))
-        self.default_luts_dirName = os.path.join(os.path.dirname(__file__), '..', 'out', 'default_LUTs')
+        
+        self.base_out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'out'))
+        self.top_mod_dir = os.path.join(self.base_out_dir, 'top_module')
+        self.lut_lib_dir = os.path.join(self.base_out_dir, 'LUTLIFT_lib')
+        self.default_luts_dir = os.path.join(self.base_out_dir, 'default_LUTs')
+        self.sby_dir = os.path.join(self.base_out_dir, 'sby')
+        
+        # Ensure directories exist right away
+        os.makedirs(self.top_mod_dir, exist_ok=True)
+        os.makedirs(self.lut_lib_dir, exist_ok=True)
+        os.makedirs(self.sby_dir, exist_ok=True)
+        
+        self.instance_fileName = os.path.join(self.top_mod_dir, self.eblif_fileName.replace('.eblif', '.v'))
+        
         self.eblif = EBLIF(eblif_fileName)
         self.LUTs = self.eblif.LUTs
-        self.input_names = self.eblif.input_names + [name + "_t" for name in self.eblif.input_names]
-        self.output_names = self.eblif.output_names + [name + "_t" for name in self.eblif.output_names]
-
-        self.original_inputs = self.eblif.input_names
-        self.original_outputs = self.eblif.output_names
-
-        self.input_names = [name.replace("[", "").replace("]", "") for name in self.input_names]
-        self.output_names = [name.replace("[", "").replace("]", "") for name in self.output_names]
+        
+        self.original_inputs = [name.replace("[", "").replace("]", "") for name in self.eblif.input_names]
+        self.original_outputs = [name.replace("[", "").replace("]", "") for name in self.eblif.output_names]
+        
+        self.input_names = self.original_inputs + [name + "_t" for name in self.original_inputs]
+        self.output_names = self.original_outputs + [name + "_t" for name in self.original_outputs]
+        
         self.vars = exprvars('v', len(self.input_names))
         self.name_map = dict(zip(self.input_names, self.vars))
         self.output_expressions = {}
 
-        # Clear the files before appending new modules
+        # Reset target top module output file
         with open(self.instance_fileName, 'w') as f:
             pass
-    
+
 
     def ift_logic_generation(self, lut: LUT) -> set:
         """
@@ -226,7 +238,7 @@ class IFT:
                     endmodule"
                 )
         """
-        path = os.path.join(os.path.dirname(__file__), '..', 'out', 'LUTLIFT_lib', f"LUT_{lut_output}.v")
+        path = os.path.join(self.lut_lib_dir, f"LUT_{lut_output}.v")
         if os.path.exists(path):
             with open(path, 'r') as f:
                 content = f.read()
@@ -253,22 +265,26 @@ class IFT:
     
 
     def generate_top_module(self):
+        print("================================ IFT GENERATION ================================\n")
         # Write the original and IFT modules for each LUT to the output directory
         default_lut_module = [False] * 6
+        i = 1
         for lut in self.LUTs:
+            print(f"LUT #{i}: {lut.output_name}")
             hexa = hex(int(lut.result, 2)).replace("0x", "")
             implicants = self.ift_logic_generation(lut)
             function = self.translateImplicants(implicants)
             self.output_expressions[lut.output_name] = self.get_original_expression(lut)
             self.output_expressions[lut.output_name + "_t"] = self.pretty(function)
-            print(f"Original Expression: {lut.output_name} = {self.output_expressions[lut.output_name]}")
-            print(f"IFT Expression: {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}")
+            print(f"   - {lut.output_name} = {self.output_expressions[lut.output_name]}")
+            print(f"   - {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}\n")
+            # print("" + "-" * 80 + "\n")
             tainted = self.to_verilog_module(hexa, lut.output_name + "_t")
             lut_inputs = int(len(self.input_names)/2)
             lut_length = int(2**(lut_inputs))
             lut_module = ""
             if not default_lut_module[lut_inputs]:
-                with open(os.path.join(self.default_luts_dirName, f"LUT{lut_inputs}.v"), 'r') as f:
+                with open(os.path.join(self.default_luts_dir, f"LUT{lut_inputs}.v"), 'r') as f:                    
                     lut_module = f.read()
                 default_lut_module[lut_inputs] = True
             with open(self.instance_fileName, 'a') as f:
@@ -277,6 +293,7 @@ class IFT:
                     f.write("\n\n" + "//" + "=" * 80 + "\n\n")
                 f.write(tainted)
                 f.write("\n\n" + "//" + "=" * 80 + "\n\n")
+            i += 1
                 
 
         # Write the top module header
@@ -337,34 +354,73 @@ class IFT:
             f.write("endmodule\n\n")
         return 
     
-# def run(self):
-#     top_module_name = self.instance_fileName.replace('.eblif', '')
-#     sby_path = os.path.join(self.out_dir, "assertion1.sby")
-#     with open(sby_path, 'w') as f:
-#         f.write("[tasks]\n")
-#         for target_input in self.original_inputs:
-#             f.write(f"check_{target_input}\n")
+    def run(self):
+        self.generate_top_module()
+        
+        module_name = self.eblif_fileName.replace('.eblif', '')
+
+        sby_fileName = f"{module_name}.sby"
+        sby_path = os.path.join(self.sby_dir, sby_fileName)
+
+        with open(sby_path, 'w') as f:
+            f.write("[tasks]\n")
+            for target_input in self.original_inputs:
+                f.write(f"check_{target_input}\n")
+                
+            f.write("\n[options]\nmode bmc\ndepth 2\n\n[engines]\nsmtbmc\n\n[script]\n")
+            for target_input in self.original_inputs:
+                f.write(f"check_{target_input}: read -formal -DTAINT_{target_input} {module_name}.v\n")
+
+            f.write(f"prep -top {module_name}\n\n[files]\n{self.instance_fileName}\n")
+
+
+        try:
+            result = subprocess.run(
+                ["sby", "-f", sby_fileName], 
+                cwd=self.sby_dir, 
+                capture_output=True, 
+                text=True
+            )
             
-#         f.write("\n[options]\nmode bmc\ndepth 2\n\n[engines]\nsmtbmc\n\n[script]\n")
-#         for target_input in self.original_inputs:
-#             f.write(f"check_{target_input}: read -formal -DTAINT_{target_input} {top_module_name}.v\n")
-#         f.write(f"prep -top {top_module_name}\n\n[files]\n{top_module_name}.v\n")
+            print("\n=========================== IFT VERIFICATION RESULTS ===========================")
+            for line in result.stdout.splitlines():
+                if "DONE" in line or "The following tasks failed" in line:
+                    print(line)
+            
+            has_failures = False
+            i = 1
+            for target_input in self.original_inputs:
+                task_folder = f"{module_name}_check_{target_input}"
+                task_dir = os.path.join(self.sby_dir, task_folder)
+                
+                tb_path = os.path.join(task_dir, "engine_0", "trace_tb.v")
+                vcd_path = os.path.join(task_dir, "engine_0", "trace.vcd")
+                
+                if os.path.exists(tb_path):
+                    has_failures = True
+                    print(f"\n{i}: Task 'check_{target_input}' failed for:")
+                    i += 1
+                    # print(f"    -> Verilog Testbench Stimulus: {tb_path}")
+                    # print(f"    -> GTKWave Waveform File     : {vcd_path}")
+                    
+                    # Print out a snippet of the stimulus assignments directly from the generated testbench
+                    try:
+                        with open(tb_path, 'r') as tb_f:
+                            for tb_line in tb_f:
+                                if ("=" in tb_line or "<=" in tb_line) and not any(k in tb_line for k in ["initial", "begin", "clk", "clock", "cycle"]):
+                                    print(f"\t{tb_line.strip().replace(';', '').replace('PI_', '')}")
+                    except Exception:
+                        pass
+                        
+            if not has_failures:
+                print("All tasks successfully PASSED! No counterexamples generated.")
 
-#     print("-" * 60)
-#     try:
-#         result = subprocess.run(
-#             ["sby", "-f", "formal.sby"], 
-#             cwd=self.out_dir, 
-#             capture_output=True, 
-#             text=True
-#         )
-#         # Print the summary output from the engine
-#         print(result.stdout)
-#     except FileNotFoundError:
-#         print("[ERROR] SymbiYosys ('sby') not found in PATH. Make sure 'export PATH=/opt/oss-cad-suite/bin:$PATH' is active.")
-
+            if result.stderr:
+                print("\n[ENGINE ERROR LOGS]:\n", result.stderr)
+        except FileNotFoundError:
+            print("[ERROR] SymbiYosys ('sby') not found in PATH.")
+            
 if __name__ == "__main__":
     eblif_fileName = "FA_1bit.eblif"
     ift = IFT(eblif_fileName)
-    ift.generate_top_module()
-        
+    ift.run()

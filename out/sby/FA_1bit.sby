@@ -1,0 +1,20 @@
+[tasks]
+check_A
+check_B
+check_Cin
+
+[options]
+mode bmc
+depth 2
+
+[engines]
+smtbmc
+
+[script]
+check_A: read -formal -DTAINT_A FA_1bit.v
+check_B: read -formal -DTAINT_B FA_1bit.v
+check_Cin: read -formal -DTAINT_Cin FA_1bit.v
+prep -top FA_1bit
+
+[files]
+/home/jacques/IFT/out/top_module/FA_1bit.v
