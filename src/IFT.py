@@ -376,49 +376,49 @@ class IFT:
                     f.write(f"check_{target_input}_to_{target_output}: read -formal -DTAINT_{target_input} -DCHECK_{target_output} {module_name}.v\n")
                 f.write(f"prep -top {module_name}\n\n[files]\n{self.instance_fileName}\n")
 
-            try:
-                result = subprocess.run(
-                    ["sby", "-f", sby_filename], 
-                    cwd=self.sby_dir,
-                    capture_output=True, 
-                    text=True
-                )
-                
-                print("\n=========================== IFT VERIFICATION RESULTS ===========================\n")
-                for line in result.stdout.splitlines():
-                    if "DONE" in line:
-                        print(line)
-                
-                has_failures = False
-                i = 1
-                print("\n")
+            # try:
+            result = subprocess.run(
+                ["sby", "-f", sby_filename], 
+                cwd=self.sby_dir,
+                capture_output=True, 
+                text=True
+            )
+            
+            print("\n=========================== IFT VERIFICATION RESULTS ===========================\n")
+            for line in result.stdout.splitlines():
+                if "DONE" in line:
+                    print(line)
+            
+            has_failures = False
+            i = 1
+            print("\n")
 
-                for target_input, target_output in product(self.original_inputs, self.original_outputs):
-                    task_folder = f"{module_name}_check_{target_input}_to_{target_output}"
-                    task_dir = os.path.join(self.sby_dir, task_folder)
-                    tb_path = os.path.join(task_dir, "engine_0", "trace_tb.v")
-                    
-                    if os.path.exists(tb_path):
-                        has_failures = True
-                        print(f"{i}: Task 'check_{target_input}_to_{target_output}' failed for:")
-                        i += 1
-                        # Output the assignments causing this pathway to leak
-                        try:
-                            with open(tb_path, 'r') as tb_f:
-                                for tb_line in tb_f:
-                                    if ("=" in tb_line or "<=" in tb_line) and not any(k in tb_line for k in ["initial", "begin", "clk", "clock", "cycle"]):
-                                        print(f"\t{tb_line.strip().replace(';', '').replace('PI_', '')}")
-                            print("\n")
-                        except Exception:
-                            pass
-                            
-                if not has_failures:
-                    print("Secure layout. No information flows out directly to any primary output ports.")
+            for target_input, target_output in product(self.original_inputs, self.original_outputs):
+                task_folder = f"{module_name}_check_{target_input}_to_{target_output}"
+                task_dir = os.path.join(self.sby_dir, task_folder)
+                tb_path = os.path.join(task_dir, "engine_0", "trace_tb.v")
                 
-                if result.stderr:
-                    print("\n[ENGINE ERROR LOGS]:\n", result.stderr)
-            except FileNotFoundError:
-                print("[ERROR] SymbiYosys ('sby') not found in PATH.")
+                if os.path.exists(tb_path):
+                    has_failures = True
+                    print(f"{i}: Task 'check_{target_input}_to_{target_output}' failed for:")
+                    i += 1
+                    # Output the assignments causing this pathway to leak
+                    try:
+                        with open(tb_path, 'r') as tb_f:
+                            for tb_line in tb_f:
+                                if ("=" in tb_line or "<=" in tb_line) and not any(k in tb_line for k in ["initial", "begin", "clk", "clock", "cycle"]):
+                                    print(f"\t{tb_line.strip().replace(';', '').replace('PI_', '')}")
+                        print("\n")
+                    except Exception:
+                        pass
+                        
+            if not has_failures:
+                print("Secure layout. No information flows out directly to any primary output ports.")
+            
+            if result.stderr:
+                print("\n[ENGINE ERROR LOGS]:\n", result.stderr)
+            # except FileNotFoundError:
+            #     print("[ERROR] SymbiYosys ('sby') not found in PATH.")
 
 
 if __name__ == "__main__":
