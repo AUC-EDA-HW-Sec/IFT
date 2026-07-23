@@ -1,0 +1,11 @@
+# Benchmark "and_top" written by ABC on Thu Jul 23 13:32:52 2026
+.model and_top
+.inputs a b a_t b_t 
+.outputs c c_t 
+.names b a b_t a_t c_t
+--11 1
+-11- 1
+1--1 1
+.names a b c
+11 1
+.end

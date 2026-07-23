@@ -1,0 +1,30 @@
+# Benchmark "FA_1bit" written by ABC on Thu Jul 23 16:57:19 2026
+.model FA_1bit
+.inputs A B Cin A_t B_t Cin_t 
+.outputs Cout Sum Cout_t Sum_t 
+.names Cin B A Cout
+-11 1
+1-1 1
+11- 1
+.names Cin_t A_t B_t Sum_t
+000 0
+.names Cin_t new_$abc$216$new_n16 new_$abc$216$new_n15 new_$abc$216$new_n17 \
+ Cout_t
+-100 0
+0-00 0
+.names B_t Cin B A_t new_$abc$216$new_n15
+-011 1
+-101 1
+1--1 1
+.names A_t B_t B A new_$abc$216$new_n16
+0000 1
+0011 1
+.names Cin A B_t new_$abc$216$new_n17
+011 1
+101 1
+.names Cin B A Sum
+001 1
+010 1
+100 1
+111 1
+.end

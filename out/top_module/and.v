@@ -22,7 +22,7 @@ endmodule
 
 //================================================================================
 
-module and(
+module and_top(
 	input a, b, a_t, b_t, 
 	output c, c_t
 );
@@ -53,8 +53,10 @@ module and(
 			assume (a_t == 1'b0);
 		`endif
 
-		// Global Assertions: Taint must never reach any primary output
-		assert (c_t == 1'b0);
+		// Isolated Output Assertions
+		`ifdef CHECK_c
+			assert (c_t == 1'b0);
+		`endif
 	end
 `endif
 

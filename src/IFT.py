@@ -2,6 +2,10 @@ import os
 import subprocess
 from itertools import product
 from unittest import result
+import os
+import subprocess
+import re
+import keyword
 from pyeda.inter import expr, exprvars, And, Or, espresso_exprs, truthtable, truthtable2expr
 from EBLIF import *
 from LUT import *
@@ -40,6 +44,12 @@ class IFT:
         # Reset target top module output file
         with open(self.instance_fileName, 'w') as f:
             pass
+
+
+    def verilog_safe_name(self, name: str) -> str:
+        if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_$]*", name) and not keyword.iskeyword(name):
+            return name
+        return f"{name}_top"
 
 
     def ift_logic_generation(self, lut: LUT) -> set:
@@ -270,6 +280,7 @@ class IFT:
         # Write the original and IFT modules for each LUT to the output directory
         default_lut_module = [False] * 6
         i = 1
+        module_name = self.verilog_safe_name(self.eblif_fileName.replace('.eblif', ''))
         for lut in self.LUTs:
             print(f"LUT #{i}: {lut.output_name}")
             hexa = hex(int(lut.result, 2)).replace("0x", "")
@@ -300,7 +311,7 @@ class IFT:
         # Write the top module header
         count = 1
         with open(self.instance_fileName, 'a') as f:
-            f.write(f"module {self.eblif_fileName.replace('.eblif', '')}(\n")
+            f.write(f"module {module_name}(\n")
             f.write("\tinput ")
             for input_name in self.input_names:
                 f.write(f"{input_name}, ")
@@ -357,11 +368,171 @@ class IFT:
             f.write("endmodule\n\n")
         return 
   
+    def generate_openfpga_task(self):
+        import glob
+        import os
+        import shutil
+        import subprocess
+        import time
 
+        openfpga_task_name = "my_adder_task"
+        module_name = self.verilog_safe_name(self.eblif_fileName.replace(".eblif", ""))
+        openfpga_path = os.getenv("OPENFPGA_PATH", os.path.expanduser("~/OpenFPGA"))
+        task_dir = os.path.join(openfpga_path, "openfpga_flow", "tasks", openfpga_task_name)
+        task_file = os.path.join(task_dir, "config", "task.conf")
+        final_out_dir = os.path.join(self.base_out_dir, "openfpga_tasks")
+        os.makedirs(final_out_dir, exist_ok=True)
+        task_benchmark_file = os.path.join(task_dir, f"{module_name}.v")
+
+        task_content = f"""[GENERAL]
+run_engine=openfpga_shell
+power_tech_file = ${{PATH:OPENFPGA_PATH}}/openfpga_flow/tech/PTM_45nm/45nm.xml
+power_analysis = true
+spice_output=false
+verilog_output=true
+timeout_each_job = 20*60
+# Switch back to yosys_vpr
+fpga_flow=yosys_vpr
+
+[OpenFPGA_SHELL]
+openfpga_shell_template=${{PATH:OPENFPGA_PATH}}/openfpga_flow/openfpga_shell_scripts/write_full_testbench_example_script.openfpga
+openfpga_arch_file=${{PATH:OPENFPGA_PATH}}/openfpga_flow/openfpga_arch/k4_N4_40nm_cc_openfpga.xml
+openfpga_sim_setting_file=${{PATH:OPENFPGA_PATH}}/openfpga_flow/openfpga_simulation_settings/auto_sim_openfpga.xml
+openfpga_vpr_device_layout=
+openfpga_fast_configuration=
+
+[ARCHITECTURES]
+arch0=${{PATH:OPENFPGA_PATH}}/openfpga_flow/vpr_arch/k4_N4_tileable_40nm.xml
+
+[BENCHMARKS]
+# Point to your Verilog file
+bench0=${{PATH:TASK_DIR}}/{module_name}.v
+
+[SYNTH_BENCHMARKS]
+# Update top module name
+bench0_top={module_name}
+
+[SYNTHESIS_PARAM]
+bench_read_verilog_options_common = -nolatches
+# Update top module name
+bench0_top = {module_name}
+bench0_chan_width = 300
+
+[SCRIPT_PARAM_MIN_ROUTE_CHAN_WIDTH]
+end_flow_with_test=
+
+[VARIABLES]
+# Update top module name
+top_module={module_name}
+# Point to your Verilog file
+circuit_file=${{PATH:TASK_DIR}}/{module_name}.v
+"""
+
+        print("=============================== OpenFPGA TASK ==============================\n")
+        # print(f"Updating task file: {task_file}")
+        # print(f"Using design name: {module_name}")
+
+        try:
+            if os.path.exists(task_benchmark_file):
+                os.remove(task_benchmark_file)
+            shutil.copyfile(self.instance_fileName, task_benchmark_file)
+            # print(f"Copied benchmark Verilog to: {task_benchmark_file}")
+
+            with open(task_file, "w", encoding="utf-8") as task_handle:
+                task_handle.write(task_content)
+
+            env = os.environ.copy()
+            env["OPENFPGA_PATH"] = openfpga_path
+
+            python_bin = "python3"
+            run_task_script = os.path.join(openfpga_path, "openfpga_flow", "scripts", "run_fpga_task.py")
+
+            # print(f"Running cleanup command for task {openfpga_task_name}...")
+            subprocess.run(
+                [python_bin, run_task_script, openfpga_task_name, "--remove_run_dir", "all"],
+                cwd=openfpga_path,
+                env=env,
+                check=True,
+            )
+
+            # print(f"Running OpenFPGA task for {openfpga_task_name}...")
+            run_process = subprocess.Popen(
+                [python_bin, run_task_script, openfpga_task_name],
+                cwd=openfpga_path,
+                env=env,
+            )
+
+            generated_blif = os.path.join(
+                task_dir,
+                "run001",
+                "k4_N4_tileable_40nm",
+                module_name,
+                "MIN_ROUTE_CHAN_WIDTH",
+                f"{module_name}.blif",
+            )
+
+            deadline = time.time() + 300
+            while time.time() < deadline:
+                if os.path.exists(generated_blif):
+                    break
+
+                candidates = glob.glob(
+                    os.path.join(
+                        task_dir,
+                        "run*",
+                        "k4_N4_tileable_40nm",
+                        module_name,
+                        "MIN_ROUTE_CHAN_WIDTH",
+                        f"{module_name}.blif",
+                    )
+                )
+                if candidates:
+                    generated_blif = max(candidates, key=os.path.getmtime)
+                    if os.path.exists(generated_blif):
+                        break
+
+                if run_process.poll() is not None:
+                    break
+
+                time.sleep(1)
+
+            if not os.path.exists(generated_blif):
+                print(f"[WARNING] Could not find generated BLIF for {module_name}.")
+                if run_process.poll() is None:
+                    run_process.terminate()
+                    try:
+                        run_process.wait(timeout=10)
+                    except subprocess.TimeoutExpired:
+                        run_process.kill()
+                        run_process.wait()
+                return
+
+            dst_path = os.path.join(final_out_dir, f"{module_name}.blif")
+            if os.path.exists(dst_path):
+                os.remove(dst_path)
+            shutil.copyfile(generated_blif, dst_path)
+            print(f"Copied BLIF to: {dst_path}")
+
+            if run_process.poll() is None:
+                run_process.terminate()
+                try:
+                    run_process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    run_process.kill()
+                    run_process.wait()
+
+        except FileNotFoundError as e:
+            print(f"Execution failed: {e}.")
+        except subprocess.CalledProcessError as e:
+            print(f"OpenFPGA command failed with exit code {e.returncode}.")
+        except Exception as e:
+            print(f"An unexpected error occurred during execution: {e}")
+
+            
     def run(self):
             self.generate_top_module()
             
-            module_name = self.eblif_fileName.replace('.eblif', '')
+            module_name = self.verilog_safe_name(self.eblif_fileName.replace('.eblif', ''))
             sby_filename = f"{module_name}.sby"
             sby_path = os.path.join(self.sby_dir, sby_filename)
 
@@ -376,49 +547,51 @@ class IFT:
                     f.write(f"check_{target_input}_to_{target_output}: read -formal -DTAINT_{target_input} -DCHECK_{target_output} {module_name}.v\n")
                 f.write(f"prep -top {module_name}\n\n[files]\n{self.instance_fileName}\n")
 
-            # try:
-            result = subprocess.run(
-                ["sby", "-f", sby_filename], 
-                cwd=self.sby_dir,
-                capture_output=True, 
-                text=True
-            )
-            
-            print("\n=========================== IFT VERIFICATION RESULTS ===========================\n")
-            for line in result.stdout.splitlines():
-                if "DONE" in line:
-                    print(line)
-            
-            has_failures = False
-            i = 1
-            print("\n")
-
-            for target_input, target_output in product(self.original_inputs, self.original_outputs):
-                task_folder = f"{module_name}_check_{target_input}_to_{target_output}"
-                task_dir = os.path.join(self.sby_dir, task_folder)
-                tb_path = os.path.join(task_dir, "engine_0", "trace_tb.v")
+            try:
+                result = subprocess.run(
+                    ["sby", "-f", sby_filename], 
+                    cwd=self.sby_dir,
+                    capture_output=True, 
+                    text=True
+                )
                 
-                if os.path.exists(tb_path):
-                    has_failures = True
-                    print(f"{i}: Task 'check_{target_input}_to_{target_output}' failed for:")
-                    i += 1
-                    # Output the assignments causing this pathway to leak
-                    try:
-                        with open(tb_path, 'r') as tb_f:
-                            for tb_line in tb_f:
-                                if ("=" in tb_line or "<=" in tb_line) and not any(k in tb_line for k in ["initial", "begin", "clk", "clock", "cycle"]):
-                                    print(f"\t{tb_line.strip().replace(';', '').replace('PI_', '')}")
-                        print("\n")
-                    except Exception:
-                        pass
-                        
-            if not has_failures:
-                print("Secure layout. No information flows out directly to any primary output ports.")
-            
-            if result.stderr:
-                print("\n[ENGINE ERROR LOGS]:\n", result.stderr)
-            # except FileNotFoundError:
-            #     print("[ERROR] SymbiYosys ('sby') not found in PATH.")
+                print("\n=========================== IFT VERIFICATION RESULTS ===========================\n")
+                for line in result.stdout.splitlines():
+                    if "DONE" in line:
+                        print(line)
+                
+                has_failures = False
+                i = 1
+                print("\n")
+
+                for target_input, target_output in product(self.original_inputs, self.original_outputs):
+                    task_folder = f"{module_name}_check_{target_input}_to_{target_output}"
+                    task_dir = os.path.join(self.sby_dir, task_folder)
+                    tb_path = os.path.join(task_dir, "engine_0", "trace_tb.v")
+                    
+                    if os.path.exists(tb_path):
+                        has_failures = True
+                        print(f"{i}: Task 'check_{target_input}_to_{target_output}' failed for:")
+                        i += 1
+                        # Output the assignments causing this pathway to leak
+                        try:
+                            with open(tb_path, 'r') as tb_f:
+                                for tb_line in tb_f:
+                                    if ("=" in tb_line or "<=" in tb_line) and not any(k in tb_line for k in ["initial", "begin", "clk", "clock", "cycle"]):
+                                        print(f"\t{tb_line.strip().replace(';', '').replace('PI_', '')}")
+                            print("\n")
+                        except Exception:
+                            pass
+                            
+                if not has_failures:
+                    print("Secure layout. No information flows out directly to any primary output ports.\n")
+                
+                if result.stderr:
+                    print("\n[ENGINE ERROR LOGS]:\n", result.stderr)
+            except FileNotFoundError:
+                print("[ERROR] SymbiYosys ('sby') not found in PATH.")
+
+            self.generate_openfpga_task()
 
 
 if __name__ == "__main__":
