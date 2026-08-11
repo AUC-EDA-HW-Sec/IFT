@@ -1,0 +1,11 @@
+# Compiled iverilog simulation binaries -- rebuilt by run_synth.sh, and the
+# bulk of the folder's size (1 MB for mult_signed_8x8 alone).
+out/*/*_sim
+
+# Tool transcripts. Regenerated on every run; useful locally, noise in git.
+out/*/*_yosys.log
+out/*/*_sim.log
+
+# The generated netlists themselves (.v, .blif, .eblif, .json), the concrete
+# .ys and the stat files ARE tracked on purpose -- they are the deliverable, and
+# the repo already tracks its other generated netlists under out/.

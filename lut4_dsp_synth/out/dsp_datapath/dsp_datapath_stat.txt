@@ -1,0 +1,34 @@
+
+43. Printing statistics.
+
+=== dsp_datapath ===
+
+   Number of wires:                 58
+   Number of wire bits:            163
+   Number of public wires:          12
+   Number of public wire bits:     101
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 82
+     $_DFF_P_                       18
+     $lut                           62
+     mult_8                          2
+
+
+47. Printing statistics.
+
+=== dsp_datapath ===
+
+   Number of wires:                 58
+   Number of wire bits:            163
+   Number of public wires:          12
+   Number of public wire bits:     101
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 82
+     $_DFF_P_                       18
+     lut4                           62
+     mult_8                          2
+

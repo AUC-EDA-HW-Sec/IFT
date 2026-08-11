@@ -1,0 +1,218 @@
+# ===========================================================================
+# lut4_dsp.ys.tmpl -- synthesise RTL to LUT4 soft logic while PRESERVING DSP
+#                     blocks, and write out both Verilog and BLIF.
+#
+# This is a template. run_synth.sh substitutes the ${...} placeholders and
+# writes the resulting concrete script next to the outputs, so every run leaves
+# behind a Yosys script you can re-run by hand:
+#
+#     yosys -s out/<design>/<design>.ys
+#
+# Placeholders:
+#   examples/mult_16x16_split.v   source RTL, space separated
+#   mult_16x16_split      top module name
+#   scripts/cells_sim.v       path to scripts/cells_sim.v      (blackbox declarations)
+#   scripts/dsp_map.v         path to scripts/dsp_map.v        ($mul -> mult_8)
+#   scripts/map_lut_to_lut4.v         path to scripts/map_lut_to_lut4.v ($lut -> lut4)
+#   -D DSP_A_MAXWIDTH=8 -D DSP_B_MAXWIDTH=8 -D DSP_A_MINWIDTH=2 -D DSP_B_MINWIDTH=2 -D DSP_NAME=mult_8x8      -D DSP_A_MAXWIDTH=8 ... -D DSP_NAME=mult_8x8
+#   4        4
+#   out/mult_16x16_split/mult_16x16_split_lut4_dsp.v  .v netlist to write
+#   out/mult_16x16_split/mult_16x16_split_lut4_dsp.blif     .blif / .eblif netlist to write
+#   out/mult_16x16_split/mult_16x16_split_lut4_dsp.json     .json netlist (machine-readable cell counts)
+#
+# The backbone follows OpenFPGA's own
+# openfpga_flow/misc/ys_tmpl_yosys_vpr_dsp_flow.ys, which is the reference for
+# "map to LUTs but keep the hard blocks". Deviations from it are commented.
+# ===========================================================================
+
+# A stale design is the most confusing failure mode there is.
+design -reset
+
+# ---------------------------------------------------------------------------
+# 1. Read the design and the target cell library
+# ---------------------------------------------------------------------------
+read_verilog examples/mult_16x16_split.v
+
+# THIS LINE IS WHY DSPs SURVIVE.
+#
+# `-lib` reads cells_sim.v as an interface-only library: every module becomes a
+# blackbox with ports but no body. Yosys will not flatten a blackbox, abc never
+# sees inside one, and `opt_clean -purge` will not dissolve it. So:
+#
+#   * a DSP the RTL INSTANTIATES directly (examples/mult_direct_inst.v) passes
+#     through the whole flow untouched, and
+#   * a DSP INFERRED from `a * b` lands on the same blackbox in step 3.
+#
+# Dropping the `-lib` does not fail quietly, which is worth knowing before you
+# go looking for a subtle one: it errors out at step 8's `hierarchy -check` with
+# "Module `\mult_8' ... is not part of the design", because `flatten` inlines
+# the instance, the now-unused module is dropped, and step 3 then re-creates a
+# reference to it. Verified both ways -- whole library non-lib, and mult_8 alone
+# given a body. `-specify` keeps timing constructs from tripping the parser.
+read_verilog -lib -specify scripts/cells_sim.v
+
+# ---------------------------------------------------------------------------
+# 2. Prepare for synthesis
+# ---------------------------------------------------------------------------
+hierarchy -check -top mult_16x16_split
+
+# Behavioural processes -> netlist logic.
+proc
+# Flatten to a single module. Blackboxes (lut4, mult_8) are left as instances.
+flatten
+# Resolve tri-state 'z' into logic, then tidy.
+tribuf -logic
+opt_expr
+opt_clean
+# Demote inout ports; -nodffe/-nosdff keep FF variants out of the netlist,
+# since the target library has no clock-enable or sync-reset flop.
+deminout
+opt -nodffe -nosdff
+
+opt_expr
+opt_clean
+check
+opt -nodffe -nosdff
+wreduce -keepdc
+peepopt
+pmuxtree
+opt_clean
+
+# ---------------------------------------------------------------------------
+# 3. Map multipliers onto the DSP primitive
+#
+# Order is deliberate and fragile; this block is lifted from
+# ys_tmpl_yosys_vpr_dsp_flow.ys, which in turn follows synth_xilinx.cc.
+# ---------------------------------------------------------------------------
+
+# Reserve memory port registers before anything can absorb a register into a
+# DSP. (Our mult_8 has no register, but the pass also stops `memory -nomap`
+# below from surprising us.)
+memory_dff
+
+# Narrow each $mul to the width its operands actually need, so that a
+# `wire [15:0] a` carrying an 8-bit value does not force a 16x16 mapping.
+wreduce t:$mul
+
+# Offer ONLY unsigned multiplies to the DSP mapper.
+#
+# mult_8 is an unsigned multiplier. mul2dsp has a DSP_SIGNEDONLY switch for
+# signed-only hard blocks but no unsigned-only counterpart, so the filtering
+# has to happen here, in the selection.
+#
+# It CANNOT be left to a _TECHMAP_FAIL_ in scripts/dsp_map.v, and that is worth
+# spelling out because it is the obvious thing to try. Both maps run in one
+# techmap pass: mul2dsp rewrites $mul into DSP_NAME cells first, and if the
+# second map then declines one, mul2dsp's rewrite is NOT rolled back. You are
+# left with a DSP_NAME cell and no module of that name -- `hierarchy -check`
+# fails with "Module `\mult_8x8' ... is not part of the design". Loud, but only
+# after the design has already been mangled. Filtering up front is the fix; the
+# _TECHMAP_FAIL_ in scripts/dsp_map.v stays as a backstop.
+select -set dsp_mul t:$mul r:A_SIGNED=0 %i r:B_SIGNED=0 %i
+
+# The mapping proper, in two hops:
+#   +/mul2dsp.v  splits an arbitrarily wide $mul into DSP_NAME cells no bigger
+#                than DSP_A_MAXWIDTH x DSP_B_MAXWIDTH, plus $shl/$add glue.
+#                A $mul narrower than DSP_[AB]_MINWIDTH is left ALONE on
+#                purpose -- preservation is meant to be selective, and tiny
+#                multipliers belong in LUTs. examples/mult_1x1_soft.v is the
+#                control for that.
+#   scripts/dsp_map.v   rewrites each of those into the real mult_8 blackbox.
+techmap -map +/mul2dsp.v -map scripts/dsp_map.v -D DSP_A_MAXWIDTH=8 -D DSP_B_MAXWIDTH=8 -D DSP_A_MINWIDTH=2 -D DSP_B_MINWIDTH=2 -D DSP_NAME=mult_8x8 @dsp_mul
+
+# mul2dsp tags what it created; drop the tag so later passes see plain cells.
+select a:mul2dsp
+setattr -unset mul2dsp
+opt_expr -fine
+wreduce
+select -clear
+
+# Any $mul that mul2dsp declined (too narrow, or signed) is renamed to
+# $__soft_mul, which is the cell type `alumacc` in step 4 expands into soft
+# logic. Without this the leftover $mul would reach abc unmapped.
+chtype -set $mul t:$__soft_mul
+
+# ---------------------------------------------------------------------------
+# 4. Coarse synthesis of everything that is NOT a DSP
+# ---------------------------------------------------------------------------
+techmap
+alumacc
+share
+opt -nodffe -nosdff
+fsm
+opt -fast -nodffe -nosdff
+memory -nomap
+opt_clean
+
+# ---------------------------------------------------------------------------
+# 5. Map flip-flops
+#
+# The target library has exactly one flop: a plain rising-edge D type. Anything
+# else -- enable, async set/reset, latch -- has to be legalised into that plus
+# soft logic, which is what dfflegalize does. `0` is the assumed power-up value.
+# ---------------------------------------------------------------------------
+dfflegalize -cell $_DFF_P_ 0
+techmap -map +/adff2dff.v
+opt_expr -mux_undef
+simplemap
+opt_expr
+opt_merge
+opt_dff -nodffe -nosdff
+opt_clean
+opt -nodffe -nosdff
+
+# ---------------------------------------------------------------------------
+# 6. Map the remaining combinational logic to LUT4
+# ---------------------------------------------------------------------------
+abc -lut 4
+opt_clean -purge
+
+# Count what abc produced, before it changes shape. If this is 0 on a design
+# that has real logic, something upstream ate it.
+tee -o out/mult_16x16_split/mult_16x16_split_stat.txt stat
+select -count t:$lut
+
+# ---------------------------------------------------------------------------
+# 7. $lut -> explicit lut4 cells
+#
+# Deviation from the OpenFPGA template, which stops at $lut and lets
+# `write_blif` emit `.names` truth tables. IFT's parser wants
+# `.subckt lut4 ... / .param LUT ...`, so the LUTs are made into real cells
+# here. This also makes the written VERILOG structural rather than a pile of
+# `assign` expressions.
+# ---------------------------------------------------------------------------
+techmap -map scripts/map_lut_to_lut4.v
+opt_clean -purge
+
+# ---------------------------------------------------------------------------
+# 8. Final checks and statistics
+# ---------------------------------------------------------------------------
+hierarchy -check
+tee -a out/mult_16x16_split/mult_16x16_split_stat.txt stat
+
+# ---------------------------------------------------------------------------
+# 9. Write the netlists
+# ---------------------------------------------------------------------------
+# Verilog: -noexpr keeps cell instances as instances instead of collapsing them
+# into expressions; -noattr drops Yosys bookkeeping attributes.
+write_verilog -noexpr -noattr out/mult_16x16_split/mult_16x16_split_lut4_dsp.v
+
+# BLIF.
+#
+# -param is REQUIRED. Without it the `LUT` parameter is dropped and every
+# `.subckt lut4` arrives with no truth table at all -- a netlist that looks
+# structurally fine and computes nothing.
+#
+# -noalias drops the fanout-less "alias" nets write_blif otherwise emits as
+# `.names <canonical> <alias>` / `1 1` whenever one net name shadows another.
+# They carry no logic (mul2dsp's generate-block wire names produce a lot of
+# them), but they are not free: VPR would pack each one as a LUT1, and IFT's
+# EBLIF parser ignores `.names` entirely, so a LUT input named only by an alias
+# would look like a primary input to it.
+#
+# Flip-flops need no option -- BLIF has a native form and $_DFF_P_ is written
+# as `.latch <d> <q> re <clk> 2`, which is what VPR and OpenFPGA expect.
+write_blif -param -noalias out/mult_16x16_split/mult_16x16_split_lut4_dsp.blif
+
+# JSON, so run_synth.sh can check cell counts without scraping `stat` text.
+write_json out/mult_16x16_split/mult_16x16_split_lut4_dsp.json

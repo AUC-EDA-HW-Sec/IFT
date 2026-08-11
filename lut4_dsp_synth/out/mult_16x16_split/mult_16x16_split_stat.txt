@@ -1,0 +1,32 @@
+
+43. Printing statistics.
+
+=== mult_16x16_split ===
+
+   Number of wires:                 81
+   Number of wire bits:            225
+   Number of public wires:           3
+   Number of public wire bits:      64
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                101
+     $lut                           97
+     mult_8                          4
+
+
+47. Printing statistics.
+
+=== mult_16x16_split ===
+
+   Number of wires:                 81
+   Number of wire bits:            225
+   Number of public wires:           3
+   Number of public wire bits:      64
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                101
+     lut4                           97
+     mult_8                          4
+

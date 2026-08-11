@@ -1,0 +1,32 @@
+
+43. Printing statistics.
+
+=== mult_direct_inst ===
+
+   Number of wires:                  5
+   Number of wire bits:             64
+   Number of public wires:           5
+   Number of public wire bits:      64
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 17
+     $lut                           16
+     mult_8                          1
+
+
+47. Printing statistics.
+
+=== mult_direct_inst ===
+
+   Number of wires:                  5
+   Number of wire bits:             64
+   Number of public wires:           5
+   Number of public wire bits:      64
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 17
+     lut4                           16
+     mult_8                          1
+

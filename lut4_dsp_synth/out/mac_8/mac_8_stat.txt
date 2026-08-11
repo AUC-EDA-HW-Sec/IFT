@@ -1,0 +1,32 @@
+
+43. Printing statistics.
+
+=== mac_8 ===
+
+   Number of wires:                 24
+   Number of wire bits:             83
+   Number of public wires:           4
+   Number of public wire bits:      48
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 36
+     $lut                           35
+     mult_8                          1
+
+
+47. Printing statistics.
+
+=== mac_8 ===
+
+   Number of wires:                 24
+   Number of wire bits:             83
+   Number of public wires:           4
+   Number of public wire bits:      48
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 36
+     lut4                           35
+     mult_8                          1
+

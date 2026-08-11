@@ -1,0 +1,30 @@
+
+43. Printing statistics.
+
+=== mult_8x8_infer ===
+
+   Number of wires:                  3
+   Number of wire bits:             32
+   Number of public wires:           3
+   Number of public wire bits:      32
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  1
+     mult_8                          1
+
+
+47. Printing statistics.
+
+=== mult_8x8_infer ===
+
+   Number of wires:                  3
+   Number of wire bits:             32
+   Number of public wires:           3
+   Number of public wire bits:      32
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  1
+     mult_8                          1
+

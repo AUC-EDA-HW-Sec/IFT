@@ -1,0 +1,30 @@
+
+43. Printing statistics.
+
+=== mult_signed_8x8 ===
+
+   Number of wires:                169
+   Number of wire bits:            198
+   Number of public wires:           3
+   Number of public wire bits:      32
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                182
+     $lut                          182
+
+
+47. Printing statistics.
+
+=== mult_signed_8x8 ===
+
+   Number of wires:                169
+   Number of wire bits:            198
+   Number of public wires:           3
+   Number of public wire bits:      32
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                182
+     lut4                          182
+

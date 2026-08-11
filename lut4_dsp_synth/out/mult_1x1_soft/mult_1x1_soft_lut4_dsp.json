@@ -1,0 +1,244 @@
+{
+  "creator": "Yosys 0.33 (git sha1 2584903a060)",
+  "modules": {
+    "lut4": {
+      "attributes": {
+        "blackbox": "00000000000000000000000000000001",
+        "src": "scripts/cells_sim.v:55.1-95.10"
+      },
+      "parameter_default_values": {
+        "LUT": "0000000000000000"
+      },
+      "ports": {
+        "in0": {
+          "direction": "input",
+          "bits": [ 2 ]
+        },
+        "in1": {
+          "direction": "input",
+          "bits": [ 3 ]
+        },
+        "in2": {
+          "direction": "input",
+          "bits": [ 4 ]
+        },
+        "in3": {
+          "direction": "input",
+          "bits": [ 5 ]
+        },
+        "out": {
+          "direction": "output",
+          "bits": [ 6 ]
+        }
+      },
+      "cells": {
+      },
+      "netnames": {
+        "in0": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "scripts/cells_sim.v:58.10-58.13"
+          }
+        },
+        "in1": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "src": "scripts/cells_sim.v:58.15-58.18"
+          }
+        },
+        "in2": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "scripts/cells_sim.v:58.20-58.23"
+          }
+        },
+        "in3": {
+          "hide_name": 0,
+          "bits": [ 5 ],
+          "attributes": {
+            "src": "scripts/cells_sim.v:58.25-58.28"
+          }
+        },
+        "out": {
+          "hide_name": 0,
+          "bits": [ 6 ],
+          "attributes": {
+            "src": "scripts/cells_sim.v:59.10-59.13"
+          }
+        }
+      }
+    },
+    "mult_1x1_soft": {
+      "attributes": {
+        "top": "00000000000000000000000000000001",
+        "src": "examples/mult_1x1_soft.v:13.1-22.10"
+      },
+      "ports": {
+        "a": {
+          "direction": "input",
+          "bits": [ 2 ]
+        },
+        "b": {
+          "direction": "input",
+          "bits": [ 3 ]
+        },
+        "c": {
+          "direction": "input",
+          "bits": [ 4 ]
+        },
+        "p": {
+          "direction": "output",
+          "bits": [ 5 ]
+        },
+        "q": {
+          "direction": "output",
+          "bits": [ 6 ]
+        }
+      },
+      "cells": {
+        "$abc$93$auto$blifparse.cc:525:parse_blif$94": {
+          "hide_name": 1,
+          "type": "lut4",
+          "parameters": {
+            "LUT": "1000100010001000"
+          },
+          "attributes": {
+            "module_not_derived": "00000000000000000000000000000001",
+            "src": "scripts/map_lut_to_lut4.v:49.35-50.70"
+          },
+          "port_directions": {
+            "in0": "input",
+            "in1": "input",
+            "in2": "input",
+            "in3": "input",
+            "out": "output"
+          },
+          "connections": {
+            "in0": [ 2 ],
+            "in1": [ 3 ],
+            "in2": [ "0" ],
+            "in3": [ "0" ],
+            "out": [ 5 ]
+          }
+        },
+        "$abc$93$auto$blifparse.cc:525:parse_blif$95": {
+          "hide_name": 1,
+          "type": "lut4",
+          "parameters": {
+            "LUT": "0111100001111000"
+          },
+          "attributes": {
+            "module_not_derived": "00000000000000000000000000000001",
+            "src": "scripts/map_lut_to_lut4.v:52.35-53.70"
+          },
+          "port_directions": {
+            "in0": "input",
+            "in1": "input",
+            "in2": "input",
+            "in3": "input",
+            "out": "output"
+          },
+          "connections": {
+            "in0": [ 2 ],
+            "in1": [ 3 ],
+            "in2": [ 4 ],
+            "in3": [ "0" ],
+            "out": [ 6 ]
+          }
+        }
+      },
+      "netnames": {
+        "a": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "examples/mult_1x1_soft.v:14.10-14.11"
+          }
+        },
+        "b": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "src": "examples/mult_1x1_soft.v:15.10-15.11"
+          }
+        },
+        "c": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "examples/mult_1x1_soft.v:16.10-16.11"
+          }
+        },
+        "p": {
+          "hide_name": 0,
+          "bits": [ 5 ],
+          "attributes": {
+            "src": "examples/mult_1x1_soft.v:17.10-17.11"
+          }
+        },
+        "q": {
+          "hide_name": 0,
+          "bits": [ 6 ],
+          "attributes": {
+            "src": "examples/mult_1x1_soft.v:18.10-18.11"
+          }
+        }
+      }
+    },
+    "mult_8": {
+      "attributes": {
+        "blackbox": "00000000000000000000000000000001",
+        "cells_not_processed": "00000000000000000000000000000001",
+        "src": "scripts/cells_sim.v:112.1-118.10"
+      },
+      "ports": {
+        "A": {
+          "direction": "input",
+          "upto": 1,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9 ]
+        },
+        "B": {
+          "direction": "input",
+          "upto": 1,
+          "bits": [ 10, 11, 12, 13, 14, 15, 16, 17 ]
+        },
+        "Y": {
+          "direction": "output",
+          "upto": 1,
+          "bits": [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33 ]
+        }
+      },
+      "cells": {
+      },
+      "netnames": {
+        "A": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9 ],
+          "upto": 1,
+          "attributes": {
+            "src": "scripts/cells_sim.v:113.17-113.18"
+          }
+        },
+        "B": {
+          "hide_name": 0,
+          "bits": [ 10, 11, 12, 13, 14, 15, 16, 17 ],
+          "upto": 1,
+          "attributes": {
+            "src": "scripts/cells_sim.v:114.17-114.18"
+          }
+        },
+        "Y": {
+          "hide_name": 0,
+          "bits": [ 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33 ],
+          "upto": 1,
+          "attributes": {
+            "src": "scripts/cells_sim.v:115.17-115.18"
+          }
+        }
+      }
+    }
+  }
+}

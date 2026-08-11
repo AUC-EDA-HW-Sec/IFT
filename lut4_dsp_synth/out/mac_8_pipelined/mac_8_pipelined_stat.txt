@@ -1,0 +1,34 @@
+
+43. Printing statistics.
+
+=== mac_8_pipelined ===
+
+   Number of wires:                 46
+   Number of wire bits:            105
+   Number of public wires:           7
+   Number of public wire bits:      51
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 71
+     $_DFF_P_                       16
+     $lut                           54
+     mult_8                          1
+
+
+47. Printing statistics.
+
+=== mac_8_pipelined ===
+
+   Number of wires:                 46
+   Number of wire bits:            105
+   Number of public wires:           7
+   Number of public wire bits:      51
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 71
+     $_DFF_P_                       16
+     lut4                           54
+     mult_8                          1
+
