@@ -188,11 +188,16 @@ class IFT:
         Output: A formatted string representing the logic expression
             (e.g., "|(&(A_t, B), &(B_t, A_t), &(A, B_t))")
         """
-        for key, value in self.output_expressions.items(): # Substitute previously generated expressions if they are present in the current expression
-            if key in self.name_map:
-                sub = self.name_map[key]
-                expr = expr.compose({sub: value})
+        # for key, value in self.output_expressions.items(): # Substitute previously generated expressions if they are present in the current expression
+        #     if key in self.name_map:
+        #         sub = self.name_map[key]
+        #         expr = expr.compose({sub: value})
         expr = expr.to_dnf() # Convert the expression to Disjunctive Normal Form to simplify it before minimizing
+        # expr_s = str(expr)
+        # for var in self.vars:  # Replace pyeda variable names with user-friendly names
+        #     if str(var) in expr_s:
+        #         expr_s = expr_s.replace(str(var), str(var).replace("v", "I")).replace("[", "").replace("]", "")
+        # expr_s = expr_s.replace('Or', '|').replace('And', '&').replace('~', '~')
         minimal_expr, = espresso_exprs(expr) # Minimize the expression
         minimal_s = str(minimal_expr)
         for var in self.vars:  # Replace pyeda variable names with user-friendly names
@@ -200,6 +205,7 @@ class IFT:
                 minimal_s = minimal_s.replace(str(var), str(var).replace("v", "I")).replace("[", "").replace("]", "")
         minimal_s = minimal_s.replace('Or', '|').replace('And', '&').replace('~', '~')
         return minimal_s
+        # return expr_s
     
 
     def to_verilog_expression(self, expr: str) -> str:
@@ -317,11 +323,17 @@ class IFT:
             for input_name in self.input_names:
                 f.write(f"{input_name}, ")
             f.write("\n")
-            f.write(f"\toutput ")
+            f.write(f"\toutput wire ")
+            for i in range(len(self.output_names) - 1):
+                f.write(f"{self.output_names[i]}_output, ")
+            f.write(f"{self.output_names[-1]}_output\n")
+            f.write(");\n\n")
+
+            f.write(f"\twire ")
             for i in range(len(self.output_names) - 1):
                 f.write(f"{self.output_names[i]}, ")
-            f.write(f"{self.output_names[-1]}\n")
-            f.write(");\n\n")
+            f.write(f"{self.output_names[-1]}\n\n")
+
 
         # Generate IFT logic for each LUT and write the corresponding Verilog instantiations
         for lut in self.LUTs:

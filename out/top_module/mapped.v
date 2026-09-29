@@ -13,7 +13,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -25,7 +25,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -37,7 +37,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -49,7 +49,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -61,15 +61,15 @@ module LUT_17(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & ~I2);
 
 endmodule
 
@@ -103,7 +103,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -115,7 +115,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -153,7 +153,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -198,13 +198,13 @@ module LUT_6900(
 	assign O_t = (I0 & I5) 
 		| (I4 & I6) 
 		| (I0 & I6) 
-		| (~I1 & I3 & I4 & I2) 
+		| (I3 & ~I1 & I2 & I4) 
 		| (I0 & I7) 
 		| (I4 & I7) 
 		| (I5 & I4) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (~I1 & ~I3 & I4 & ~I2) 
-		| (I1 & I3 & I4 & ~I2);
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & ~I1 & ~I2 & I4) 
+		| (I3 & I1 & ~I2 & I4);
 
 endmodule
 
@@ -216,15 +216,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -251,25 +251,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -282,7 +282,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -296,7 +296,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -309,7 +309,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -321,13 +321,13 @@ module LUT_80(
 	output O_t
 );
 
-	assign O_t = (I3 & I4 & I2) 
+	assign O_t = (I3 & I2 & I4) 
 		| (I0 & I5 & I4) 
-		| (I5 & I3 & I4) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (I1 & I5 & I3);
+		| (I3 & I5 & I4) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & I1 & I5);
 
 endmodule
 
@@ -339,25 +339,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -370,7 +370,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -383,12 +383,12 @@ module LUT_60(
 	output O_t
 );
 
-	assign O_t = (I5 & I3) 
-		| (~I1 & I3 & I2) 
+	assign O_t = (I3 & I5) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
 		| (I0 & I5) 
 		| (I0 & I4) 
-		| (I1 & I3 & ~I2);
+		| (I3 & I1 & ~I2);
 
 endmodule
 
@@ -401,7 +401,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -416,7 +416,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -430,25 +430,25 @@ module LUT_222b(
 	output O_t
 );
 
-	assign O_t = (I0 & I3 & I6) 
-		| (I5 & ~I3 & I4 & ~I2) 
-		| (~I0 & ~I1 & I2 & I7) 
-		| (~I0 & ~I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & I2) 
+	assign O_t = (I3 & I0 & I6) 
+		| (~I3 & ~I2 & I5 & I4) 
+		| (~I1 & I2 & ~I0 & I7) 
+		| (~I3 & ~I1 & ~I0 & I6) 
+		| (I3 & I2 & I5 & I4) 
 		| (~I0 & I5 & I6) 
-		| (I0 & ~I2 & I7) 
-		| (~I1 & I3 & I4 & I2) 
+		| (~I2 & I0 & I7) 
+		| (I3 & ~I1 & I2 & I4) 
 		| (I1 & ~I2 & I7) 
 		| (~I0 & I5 & I7) 
 		| (I5 & I4 & I7) 
-		| (~I1 & ~I3 & I4 & ~I2) 
+		| (~I3 & ~I1 & ~I2 & I4) 
 		| (I6 & I7) 
-		| (I1 & I3 & I6) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I1 & I6) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (~I1 & I4 & I6) 
 		| (~I1 & I4 & I7) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I5 & ~I3 & ~I2);
+		| (~I3 & ~I2 & ~I0 & I5);
 
 endmodule
 
@@ -460,23 +460,23 @@ module LUT_7117(
 	output O_t
 );
 
-	assign O_t = (I0 & ~I1 & ~I2 & I7) 
+	assign O_t = (~I1 & ~I2 & I0 & I7) 
 		| (I4 & I6) 
 		| (I6 & I7) 
-		| (~I0 & ~I1 & I2 & I7) 
-		| (~I0 & ~I1 & I3 & I6) 
-		| (I5 & ~I3 & I2) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & ~I1 & ~I3 & I6) 
-		| (~I3 & I4 & I2) 
-		| (~I0 & I1 & ~I3 & I6) 
+		| (~I1 & I2 & ~I0 & I7) 
+		| (I3 & ~I1 & ~I0 & I6) 
+		| (~I3 & I2 & I5) 
+		| (I3 & I1 & I0 & I6) 
+		| (~I3 & ~I1 & I0 & I6) 
+		| (~I3 & I2 & I4) 
+		| (~I3 & I1 & ~I0 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & ~I2 & I7) 
+		| (I1 & ~I2 & ~I0 & I7) 
 		| (I5 & I7) 
-		| (I5 & I3 & ~I2) 
-		| (I3 & I4 & ~I2) 
+		| (I3 & ~I2 & I5) 
+		| (I3 & ~I2 & I4) 
 		| (I5 & I6) 
-		| (I0 & I1 & I2 & I7);
+		| (I1 & I2 & I0 & I7);
 
 endmodule
 
@@ -491,9 +491,9 @@ module LUT_f807(
 	assign O_t = I4 &  
 		| (~I1 & I6 & I7) 
 		| (~I1 & I2 & I7) 
-		| (I5 & ~I3) 
-		| (~I1 & I3 & I6) 
-		| (I5 & ~I2) 
+		| (~I3 & I5) 
+		| (I3 & ~I1 & I6) 
+		| (~I2 & I5) 
 		| (I5 & I7) 
 		| (I5 & I6);
 
@@ -507,13 +507,13 @@ module LUT_40(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
+	assign O_t = (~I2 & I0 & I4) 
 		| (I0 & I5 & I4) 
-		| (I5 & I3 & I4) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I3 & I4 & ~I2) 
-		| (I1 & I5 & I3);
+		| (I3 & I5 & I4) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I3 & ~I2 & I4) 
+		| (I3 & I1 & I5);
 
 endmodule
 
@@ -525,21 +525,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -568,7 +568,7 @@ module LUT_4(
 
 	assign O_t = (~I1 & I2) 
 		| (I3 & I2) 
-		| (I0 & I3);
+		| (I3 & I0);
 
 endmodule
 
@@ -580,15 +580,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -600,7 +600,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -612,15 +612,15 @@ module LUT_17(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & ~I2);
 
 endmodule
 
@@ -647,14 +647,14 @@ module LUT_708(
 	assign O_t = (I5 & I6 & I7) 
 		| (~I1 & I6 & I7) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I5 & I2 & I7) 
+		| (~I2 & I0 & I5) 
+		| (I3 & ~I1 & I6) 
+		| (I2 & I5 & I7) 
 		| (I5 & I4) 
-		| (I0 & I5 & ~I3) 
-		| (I5 & I3 & I6);
+		| (~I3 & I0 & I5) 
+		| (I3 & I5 & I6);
 
 endmodule
 
@@ -682,17 +682,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -705,21 +705,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -761,7 +761,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -776,7 +776,7 @@ module LUT_4(
 
 	assign O_t = (~I1 & I2) 
 		| (I3 & I2) 
-		| (I0 & I3);
+		| (I3 & I0);
 
 endmodule
 
@@ -801,17 +801,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -824,21 +824,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -869,12 +869,12 @@ module LUT_8e71(
 
 	assign O_t = I4 &  
 		| (I6 & I7) 
-		| (~I1 & ~I3 & I6) 
-		| (I5 & ~I3 & I2) 
+		| (~I3 & ~I1 & I6) 
+		| (~I3 & I2 & I5) 
 		| (I1 & I2 & I7) 
-		| (I1 & I3 & I6) 
+		| (I3 & I1 & I6) 
 		| (I5 & I7) 
-		| (I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I5) 
 		| (I5 & I6) 
 		| (~I1 & ~I2 & I7);
 
@@ -889,23 +889,23 @@ module LUT_7100(
 );
 
 	assign O_t = (I0 & I6 & I7) 
-		| (I5 & I4 & ~I2) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I5 & ~I3 & I2) 
+		| (~I2 & I5 & I4) 
+		| (I3 & I1 & I0 & I6) 
+		| (~I3 & I2 & I0 & I5) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
-		| (I1 & ~I3 & I4) 
-		| (I1 & I4 & ~I2) 
-		| (I5 & ~I3 & I4) 
-		| (I4 & ~I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (~I3 & I1 & I4) 
+		| (I1 & ~I2 & I4) 
+		| (~I3 & I5 & I4) 
+		| (~I2 & I4 & I7) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (~I3 & I4 & ~I2) 
+		| (I1 & I2 & I0 & I7) 
+		| (~I3 & ~I2 & I4) 
 		| (~I3 & I4 & I6) 
-		| (I0 & ~I1 & ~I2 & I7) 
-		| (I0 & ~I1 & ~I3 & I6) 
+		| (~I1 & ~I2 & I0 & I7) 
+		| (~I3 & ~I1 & I0 & I6) 
 		| (I1 & I4 & I6) 
 		| (I4 & I6 & I7) 
 		| (I5 & I4 & I6);
@@ -932,7 +932,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -944,15 +944,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -964,7 +964,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -976,15 +976,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -996,25 +996,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -1026,7 +1026,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1038,13 +1038,13 @@ module LUT_80(
 	output O_t
 );
 
-	assign O_t = (I3 & I4 & I2) 
+	assign O_t = (I3 & I2 & I4) 
 		| (I0 & I5 & I4) 
-		| (I5 & I3 & I4) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (I1 & I5 & I3);
+		| (I3 & I5 & I4) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & I1 & I5);
 
 endmodule
 
@@ -1056,15 +1056,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -1076,7 +1076,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1089,17 +1089,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -1112,21 +1112,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -1139,7 +1139,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -1170,21 +1170,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -1213,7 +1213,7 @@ module LUT_4(
 
 	assign O_t = (~I1 & I2) 
 		| (I3 & I2) 
-		| (I0 & I3);
+		| (I3 & I0);
 
 endmodule
 
@@ -1225,25 +1225,25 @@ module LUT_222b(
 	output O_t
 );
 
-	assign O_t = (I0 & I3 & I6) 
-		| (I5 & ~I3 & I4 & ~I2) 
-		| (~I0 & ~I1 & I2 & I7) 
-		| (~I0 & ~I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & I2) 
+	assign O_t = (I3 & I0 & I6) 
+		| (~I3 & ~I2 & I5 & I4) 
+		| (~I1 & I2 & ~I0 & I7) 
+		| (~I3 & ~I1 & ~I0 & I6) 
+		| (I3 & I2 & I5 & I4) 
 		| (~I0 & I5 & I6) 
-		| (I0 & ~I2 & I7) 
-		| (~I1 & I3 & I4 & I2) 
+		| (~I2 & I0 & I7) 
+		| (I3 & ~I1 & I2 & I4) 
 		| (I1 & ~I2 & I7) 
 		| (~I0 & I5 & I7) 
 		| (I5 & I4 & I7) 
-		| (~I1 & ~I3 & I4 & ~I2) 
+		| (~I3 & ~I1 & ~I2 & I4) 
 		| (I6 & I7) 
-		| (I1 & I3 & I6) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I1 & I6) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (~I1 & I4 & I6) 
 		| (~I1 & I4 & I7) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I5 & ~I3 & ~I2);
+		| (~I3 & ~I2 & ~I0 & I5);
 
 endmodule
 
@@ -1255,15 +1255,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -1275,7 +1275,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1287,15 +1287,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -1319,15 +1319,15 @@ module LUT_17(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & ~I2);
 
 endmodule
 
@@ -1356,15 +1356,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -1376,7 +1376,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1389,17 +1389,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -1412,21 +1412,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -1439,7 +1439,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -1471,17 +1471,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -1495,7 +1495,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -1526,21 +1526,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -1552,7 +1552,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1565,20 +1565,20 @@ module LUT_d44d(
 );
 
 	assign O_t = (I4 & I6) 
-		| (~I0 & ~I1 & I3 & I6) 
-		| (I0 & I1 & ~I2 & I7) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & ~I1 & ~I3 & I6) 
-		| (I5 & ~I3 & ~I2) 
-		| (~I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I2) 
-		| (I3 & I4 & I2) 
-		| (I0 & ~I1 & I2 & I7) 
+		| (I3 & ~I1 & ~I0 & I6) 
+		| (I1 & ~I2 & I0 & I7) 
+		| (I3 & I1 & I0 & I6) 
+		| (~I3 & ~I1 & I0 & I6) 
+		| (~I3 & ~I2 & I5) 
+		| (~I3 & I1 & ~I0 & I6) 
+		| (I3 & I2 & I5) 
+		| (I3 & I2 & I4) 
+		| (~I1 & I2 & I0 & I7) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
 		| (I5 & I7) 
-		| (~I0 & ~I1 & ~I2 & I7) 
-		| (~I3 & I4 & ~I2) 
+		| (~I1 & ~I2 & ~I0 & I7) 
+		| (~I3 & ~I2 & I4) 
 		| (I5 & I6) 
 		| (I6 & I7);
 
@@ -1608,7 +1608,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -1622,15 +1622,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -1642,7 +1642,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1655,17 +1655,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -1678,21 +1678,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -1705,7 +1705,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -1737,17 +1737,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -1761,7 +1761,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -1792,21 +1792,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -1820,12 +1820,12 @@ module LUT_8e71(
 
 	assign O_t = I4 &  
 		| (I6 & I7) 
-		| (~I1 & ~I3 & I6) 
-		| (I5 & ~I3 & I2) 
+		| (~I3 & ~I1 & I6) 
+		| (~I3 & I2 & I5) 
 		| (I1 & I2 & I7) 
-		| (I1 & I3 & I6) 
+		| (I3 & I1 & I6) 
 		| (I5 & I7) 
-		| (I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I5) 
 		| (I5 & I6) 
 		| (~I1 & ~I2 & I7);
 
@@ -1840,23 +1840,23 @@ module LUT_7100(
 );
 
 	assign O_t = (I0 & I6 & I7) 
-		| (I5 & I4 & ~I2) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I5 & ~I3 & I2) 
+		| (~I2 & I5 & I4) 
+		| (I3 & I1 & I0 & I6) 
+		| (~I3 & I2 & I0 & I5) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
-		| (I1 & ~I3 & I4) 
-		| (I1 & I4 & ~I2) 
-		| (I5 & ~I3 & I4) 
-		| (I4 & ~I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (~I3 & I1 & I4) 
+		| (I1 & ~I2 & I4) 
+		| (~I3 & I5 & I4) 
+		| (~I2 & I4 & I7) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (~I3 & I4 & ~I2) 
+		| (I1 & I2 & I0 & I7) 
+		| (~I3 & ~I2 & I4) 
 		| (~I3 & I4 & I6) 
-		| (I0 & ~I1 & ~I2 & I7) 
-		| (I0 & ~I1 & ~I3 & I6) 
+		| (~I1 & ~I2 & I0 & I7) 
+		| (~I3 & ~I1 & I0 & I6) 
 		| (I1 & I4 & I6) 
 		| (I4 & I6 & I7) 
 		| (I5 & I4 & I6);
@@ -1883,7 +1883,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1895,15 +1895,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -1915,7 +1915,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1927,15 +1927,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -1947,15 +1947,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -1967,7 +1967,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -1979,15 +1979,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -1999,7 +1999,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2011,13 +2011,13 @@ module LUT_80(
 	output O_t
 );
 
-	assign O_t = (I3 & I4 & I2) 
+	assign O_t = (I3 & I2 & I4) 
 		| (I0 & I5 & I4) 
-		| (I5 & I3 & I4) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (I1 & I5 & I3);
+		| (I3 & I5 & I4) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & I1 & I5);
 
 endmodule
 
@@ -2029,15 +2029,15 @@ module LUT_b2(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
-		| (I5 & I3) 
-		| (~I0 & I4 & I2) 
+	assign O_t = (~I2 & I0 & I4) 
+		| (I3 & I5) 
+		| (I2 & ~I0 & I4) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -2049,7 +2049,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2062,17 +2062,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -2085,21 +2085,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -2112,7 +2112,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -2144,17 +2144,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -2168,7 +2168,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -2199,21 +2199,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -2242,7 +2242,7 @@ module LUT_4(
 
 	assign O_t = (~I1 & I2) 
 		| (I3 & I2) 
-		| (I0 & I3);
+		| (I3 & I0);
 
 endmodule
 
@@ -2254,25 +2254,25 @@ module LUT_222b(
 	output O_t
 );
 
-	assign O_t = (I0 & I3 & I6) 
-		| (I5 & ~I3 & I4 & ~I2) 
-		| (~I0 & ~I1 & I2 & I7) 
-		| (~I0 & ~I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & I2) 
+	assign O_t = (I3 & I0 & I6) 
+		| (~I3 & ~I2 & I5 & I4) 
+		| (~I1 & I2 & ~I0 & I7) 
+		| (~I3 & ~I1 & ~I0 & I6) 
+		| (I3 & I2 & I5 & I4) 
 		| (~I0 & I5 & I6) 
-		| (I0 & ~I2 & I7) 
-		| (~I1 & I3 & I4 & I2) 
+		| (~I2 & I0 & I7) 
+		| (I3 & ~I1 & I2 & I4) 
 		| (I1 & ~I2 & I7) 
 		| (~I0 & I5 & I7) 
 		| (I5 & I4 & I7) 
-		| (~I1 & ~I3 & I4 & ~I2) 
+		| (~I3 & ~I1 & ~I2 & I4) 
 		| (I6 & I7) 
-		| (I1 & I3 & I6) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I1 & I6) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (~I1 & I4 & I6) 
 		| (~I1 & I4 & I7) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I5 & ~I3 & ~I2);
+		| (~I3 & ~I2 & ~I0 & I5);
 
 endmodule
 
@@ -2284,15 +2284,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -2304,7 +2304,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2316,15 +2316,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -2336,7 +2336,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2348,15 +2348,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -2368,7 +2368,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2380,25 +2380,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -2426,7 +2426,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -2441,7 +2441,7 @@ module LUT_4(
 
 	assign O_t = (~I1 & I2) 
 		| (I3 & I2) 
-		| (I0 & I3);
+		| (I3 & I0);
 
 endmodule
 
@@ -2466,17 +2466,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -2490,7 +2490,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -2521,21 +2521,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -2564,7 +2564,7 @@ module LUT_96(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2576,15 +2576,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -2596,7 +2596,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2608,15 +2608,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -2628,7 +2628,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2640,25 +2640,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -2671,7 +2671,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -2685,15 +2685,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -2705,7 +2705,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2718,7 +2718,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -2749,21 +2749,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -2776,17 +2776,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -2800,7 +2800,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -2831,21 +2831,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -2860,10 +2860,10 @@ module LUT_2bd4(
 	assign O_t = I4 &  
 		| (I1 & ~I2 & I7) 
 		| (~I1 & I2 & I7) 
-		| (~I1 & ~I3 & I6) 
-		| (I5 & ~I3 & ~I2) 
-		| (I5 & I3 & I2) 
-		| (I1 & I3 & I6) 
+		| (~I3 & ~I1 & I6) 
+		| (~I3 & ~I2 & I5) 
+		| (I3 & I2 & I5) 
+		| (I3 & I1 & I6) 
 		| (I5 & I7) 
 		| (I5 & I6) 
 		| (I6 & I7);
@@ -2880,7 +2880,7 @@ module LUT_4(
 
 	assign O_t = (~I1 & I2) 
 		| (I3 & I2) 
-		| (I0 & I3);
+		| (I3 & I0);
 
 endmodule
 
@@ -2892,7 +2892,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2904,7 +2904,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2932,7 +2932,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -2945,7 +2945,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -2957,15 +2957,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -2977,15 +2977,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -2997,7 +2997,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -3009,15 +3009,15 @@ module LUT_71(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
-		| (~I1 & I3 & I2) 
+		| (I3 & ~I1 & I2) 
 		| (I3 & I4) 
-		| (~I0 & ~I1 & I5) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I0 & I4 & I2);
+		| (~I1 & ~I0 & I5) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I2 & I0 & I4);
 
 endmodule
 
@@ -3029,7 +3029,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -3041,25 +3041,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -3087,7 +3087,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -3100,13 +3100,13 @@ module LUT_40(
 	output O_t
 );
 
-	assign O_t = (I0 & I4 & ~I2) 
+	assign O_t = (~I2 & I0 & I4) 
 		| (I0 & I5 & I4) 
-		| (I5 & I3 & I4) 
-		| (I0 & I1 & I5) 
-		| (I1 & I3 & ~I2) 
-		| (I3 & I4 & ~I2) 
-		| (I1 & I5 & I3);
+		| (I3 & I5 & I4) 
+		| (I1 & I0 & I5) 
+		| (I3 & I1 & ~I2) 
+		| (I3 & ~I2 & I4) 
+		| (I3 & I1 & I5);
 
 endmodule
 
@@ -3119,7 +3119,7 @@ module LUT_87(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -3134,17 +3134,17 @@ module LUT_7f(
 );
 
 	assign O_t = (~I0 & I5 & I6 & I7) 
-		| (~I0 & I1 & I6 & I7) 
-		| (~I0 & I1 & I3 & I6) 
+		| (I1 & ~I0 & I6 & I7) 
+		| (I3 & I1 & ~I0 & I6) 
 		| (~I3 & I4) 
 		| (~I1 & I4) 
-		| (~I0 & I5 & I3 & I2) 
+		| (I3 & I2 & ~I0 & I5) 
 		| (I4 & I6) 
 		| (I4 & I7) 
-		| (~I0 & I1 & I2 & I7) 
-		| (I4 & ~I2) 
-		| (~I0 & I5 & I3 & I6) 
-		| (~I0 & I5 & I2 & I7) 
+		| (I1 & I2 & ~I0 & I7) 
+		| (~I2 & I4) 
+		| (I3 & ~I0 & I5 & I6) 
+		| (I2 & ~I0 & I5 & I7) 
 		| (I5 & I4);
 
 endmodule
@@ -3157,21 +3157,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -3184,25 +3184,25 @@ module LUT_d400(
 );
 
 	assign O_t = (I0 & I6 & I7) 
-		| (I0 & I1 & I3 & I6) 
-		| (I5 & I4 & I2) 
-		| (I4 & I2 & I7) 
+		| (I3 & I1 & I0 & I6) 
+		| (I2 & I5 & I4) 
+		| (I2 & I4 & I7) 
 		| (I5 & I4 & I7) 
-		| (I0 & I5 & ~I3 & ~I2) 
+		| (~I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I7) 
-		| (I1 & ~I3 & I4) 
-		| (I0 & I5 & I3 & I2) 
-		| (I5 & ~I3 & I4) 
-		| (~I3 & I4 & I2) 
-		| (I0 & ~I1 & I2 & I7) 
+		| (~I3 & I1 & I4) 
+		| (I3 & I2 & I0 & I5) 
+		| (~I3 & I5 & I4) 
+		| (~I3 & I2 & I4) 
+		| (~I1 & I2 & I0 & I7) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
 		| (~I3 & I4 & I6) 
-		| (I0 & I1 & ~I2 & I7) 
-		| (I0 & ~I1 & ~I3 & I6) 
+		| (I1 & ~I2 & I0 & I7) 
+		| (~I3 & ~I1 & I0 & I6) 
 		| (I1 & I4 & I6) 
 		| (I4 & I6 & I7) 
-		| (I1 & I4 & I2) 
+		| (I1 & I2 & I4) 
 		| (I5 & I4 & I6);
 
 endmodule
@@ -3228,7 +3228,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -3243,7 +3243,7 @@ module LUT_4(
 
 	assign O_t = (~I1 & I2) 
 		| (I3 & I2) 
-		| (I0 & I3);
+		| (I3 & I0);
 
 endmodule
 
@@ -3256,7 +3256,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -3269,12 +3269,12 @@ module LUT_90(
 	output O_t
 );
 
-	assign O_t = (I5 & I3) 
+	assign O_t = (I3 & I5) 
 		| (I3 & I4) 
 		| (I0 & I5) 
 		| (I0 & I4) 
-		| (I1 & I3 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (I3 & I1 & I2) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -3286,7 +3286,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -3298,15 +3298,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -3318,15 +3318,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -3338,7 +3338,7 @@ module LUT_69(
 	output O_t
 );
 
-	assign O_t = I5 | I3 | I4;
+	assign O_t = I3 | I5 | I4;
 
 endmodule
 
@@ -3350,15 +3350,15 @@ module LUT_2b(
 	output O_t
 );
 
-	assign O_t = (~I0 & I4 & ~I2) 
-		| (I5 & I3) 
+	assign O_t = (~I2 & ~I0 & I4) 
+		| (I3 & I5) 
 		| (I5 & I4) 
 		| (I3 & I4) 
-		| (I0 & ~I1 & I5) 
-		| (~I0 & I1 & I5) 
-		| (I1 & I3 & I2) 
-		| (I0 & I4 & I2) 
-		| (~I1 & I3 & ~I2);
+		| (~I1 & I0 & I5) 
+		| (I1 & ~I0 & I5) 
+		| (I3 & I1 & I2) 
+		| (I2 & I0 & I4) 
+		| (I3 & ~I1 & ~I2);
 
 endmodule
 
@@ -3370,25 +3370,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -3415,25 +3415,25 @@ module LUT_1777(
 	output O_t
 );
 
-	assign O_t = (I0 & I1 & ~I3 & I6) 
-		| (I5 & I3 & I4 & ~I2) 
-		| (~I1 & I3 & I6) 
-		| (I1 & ~I3 & I4 & I2) 
-		| (I0 & I5 & ~I3 & I2) 
-		| (I5 & ~I3 & I4 & I2) 
+	assign O_t = (~I3 & I1 & I0 & I6) 
+		| (I3 & ~I2 & I5 & I4) 
+		| (I3 & ~I1 & I6) 
+		| (~I3 & I1 & I2 & I4) 
+		| (~I3 & I2 & I0 & I5) 
+		| (~I3 & I2 & I5 & I4) 
 		| (I5 & I4 & I7) 
 		| (I0 & I5 & I7) 
 		| (I6 & I7) 
-		| (~I0 & I3 & I6) 
+		| (I3 & ~I0 & I6) 
 		| (~I1 & I2 & I7) 
-		| (I0 & I5 & I3 & ~I2) 
+		| (I3 & ~I2 & I0 & I5) 
 		| (I0 & I5 & I6) 
 		| (I1 & I4 & I7) 
-		| (I1 & I3 & I4 & ~I2) 
-		| (I0 & I1 & ~I2 & I7) 
+		| (I3 & I1 & ~I2 & I4) 
+		| (I1 & ~I2 & I0 & I7) 
 		| (I1 & I4 & I6) 
 		| (I5 & I4 & I6) 
-		| (~I0 & I2 & I7);
+		| (I2 & ~I0 & I7);
 
 endmodule
 
@@ -3446,7 +3446,7 @@ module LUT_8(
 );
 
 	assign O_t = (I3 & I2) 
-		| (I0 & I3) 
+		| (I3 & I0) 
 		| (I1 & I2);
 
 endmodule
@@ -3460,7 +3460,7 @@ module LUT_78(
 );
 
 	assign O_t = I3 &  
-		| (I4 & I2) 
+		| (I2 & I4) 
 		| (I5 & I4) 
 		| (I1 & I5);
 
@@ -3491,21 +3491,21 @@ module LUT_8000(
 	output O_t
 );
 
-	assign O_t = (I5 & I4 & I2 & I7) 
-		| (I0 & I5 & I2 & I7) 
-		| (I0 & I5 & I3 & I6) 
-		| (I0 & I1 & I3 & I6) 
-		| (I0 & I1 & I6 & I7) 
+	assign O_t = (I2 & I5 & I4 & I7) 
+		| (I2 & I0 & I5 & I7) 
+		| (I3 & I0 & I5 & I6) 
+		| (I3 & I1 & I0 & I6) 
+		| (I1 & I0 & I6 & I7) 
 		| (I1 & I4 & I6 & I7) 
-		| (I5 & I3 & I4 & I6) 
+		| (I3 & I5 & I4 & I6) 
 		| (I5 & I4 & I6 & I7) 
-		| (I1 & I3 & I4 & I6) 
+		| (I3 & I1 & I4 & I6) 
 		| (I0 & I5 & I6 & I7) 
-		| (I1 & I3 & I4 & I2) 
-		| (I5 & I3 & I4 & I2) 
-		| (I1 & I4 & I2 & I7) 
-		| (I0 & I1 & I2 & I7) 
-		| (I0 & I5 & I3 & I2);
+		| (I3 & I1 & I2 & I4) 
+		| (I3 & I2 & I5 & I4) 
+		| (I1 & I2 & I4 & I7) 
+		| (I1 & I2 & I0 & I7) 
+		| (I3 & I2 & I0 & I5);
 
 endmodule
 
@@ -3514,8 +3514,10 @@ endmodule
 
 module mapped(
 	input a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, a0_t, a1_t, a2_t, a3_t, a4_t, a5_t, a6_t, a7_t, b0_t, b1_t, b2_t, b3_t, b4_t, b5_t, b6_t, b7_t, c0_t, c1_t, c2_t, c3_t, c4_t, c5_t, c6_t, c7_t, c8_t, c9_t, c10_t, c11_t, c12_t, c13_t, c14_t, c15_t, 
-	output p4, p15, p6, p5, p_lut4_out_9_in0, p_lut4_out_11_in2, p3, p_lut4_out_12_in2, p_lut4_out_12_in2_lut4_out_in1, p_lut4_out_12_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_12_in2_lut4_out_in2, p2, p_lut4_out_12_in0, p_lut4_out_12_in1, p_lut4_out_13_in2, p_lut4_out_12_in2_lut4_out_in0, p_lut4_out_13_in2_lut4_out_in2, p_lut4_out_13_in3, p1, p_lut4_out_14_in0, p_lut4_out_13_in1, p_lut4_out_14_in1, p_lut4_out_13_in0, p_lut4_out_14_in2, p0, p_lut4_out_1_in0, p_lut4_out_1_in1, p_lut4_out_1_in2, p_lut4_out_2_in3_lut4_out_in2, p_lut4_out_1_in2_lut4_out_in2, p14, p_lut4_out_2_in1, p_lut4_out_2_in2, p_lut4_out_3_in3_lut4_out_in1, p_lut4_out_2_in2_lut4_out_in0, p_lut4_out_2_in2_lut4_out_in1, p_lut4_out_2_in2_lut4_out_in2, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in3, p_lut4_out_2_in3, p_lut4_out_2_in3_lut4_out_in0, p_lut4_out_2_in3_lut4_out_in1, p_lut4_out_2_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_lut4_out_in3, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in1, p13, p_lut4_out_2_in0, p_lut4_out_3_in3, p12, p_lut4_out_4_in1, p_lut4_out_4_in2, p_lut4_out_3_in3_lut4_out_in0, p_lut4_out_4_in2_lut4_out_in0, p_lut4_out_4_in2_lut4_out_in1, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_4_in2_lut4_out_in2, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in2, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in2, p11, p_lut4_out_5_in1, p_lut4_out_4_in0, p_lut4_out_5_in2, p_lut4_out_6_in3_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_5_in2_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3, p_lut4_out_5_in3, p_lut4_out_5_in3_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in1, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in3, p_lut4_out_5_in3_lut4_out_in2, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3, p10, p_lut4_out_5_in0, p_lut4_out_6_in3, p9, p_lut4_out_7_in1, p_lut4_out_7_in2, p_lut4_out_6_in3_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3, p8, p_lut4_out_8_in1, p_lut4_out_7_in0, p_lut4_out_8_in2, p_lut4_out_9_in3_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in0, p_lut4_out_8_in2_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3, p_lut4_out_8_in3_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3, p7, p_lut4_out_9_in1, p_lut4_out_9_in1_lut4_out_in1, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2, p_lut4_out_9_in3_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in1, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_8_in0, p_lut4_out_9_in3, p_lut4_out_11_in0, p_lut4_out_in0, p_lut4_out_11_in1, p_lut4_out_in1, p_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in0, p_lut4_out_in2_lut4_out_in0, p_lut4_out_in2_lut4_out_in1, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in1, p_lut4_out_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_lut4_out_in2, p_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_in2_lut4_out_in2, p4_t, p15_t, p6_t, p5_t, p_lut4_out_9_in0_t, p_lut4_out_11_in2_t, p3_t, p_lut4_out_12_in2_t, p_lut4_out_12_in2_lut4_out_in1_t, p_lut4_out_12_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_12_in2_lut4_out_in2_t, p2_t, p_lut4_out_12_in0_t, p_lut4_out_12_in1_t, p_lut4_out_13_in2_t, p_lut4_out_12_in2_lut4_out_in0_t, p_lut4_out_13_in2_lut4_out_in2_t, p_lut4_out_13_in3_t, p1_t, p_lut4_out_14_in0_t, p_lut4_out_13_in1_t, p_lut4_out_14_in1_t, p_lut4_out_13_in0_t, p_lut4_out_14_in2_t, p0_t, p_lut4_out_1_in0_t, p_lut4_out_1_in1_t, p_lut4_out_1_in2_t, p_lut4_out_2_in3_lut4_out_in2_t, p_lut4_out_1_in2_lut4_out_in2_t, p14_t, p_lut4_out_2_in1_t, p_lut4_out_2_in2_t, p_lut4_out_3_in3_lut4_out_in1_t, p_lut4_out_2_in2_lut4_out_in0_t, p_lut4_out_2_in2_lut4_out_in1_t, p_lut4_out_2_in2_lut4_out_in2_t, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in3_t, p_lut4_out_2_in3_t, p_lut4_out_2_in3_lut4_out_in0_t, p_lut4_out_2_in3_lut4_out_in1_t, p_lut4_out_2_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_t, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_lut4_out_in3_t, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in1_t, p13_t, p_lut4_out_2_in0_t, p_lut4_out_3_in3_t, p12_t, p_lut4_out_4_in1_t, p_lut4_out_4_in2_t, p_lut4_out_3_in3_lut4_out_in0_t, p_lut4_out_4_in2_lut4_out_in0_t, p_lut4_out_4_in2_lut4_out_in1_t, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_4_in2_lut4_out_in2_t, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in2_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in2_t, p11_t, p_lut4_out_5_in1_t, p_lut4_out_4_in0_t, p_lut4_out_5_in2_t, p_lut4_out_6_in3_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_5_in2_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p_lut4_out_5_in3_t, p_lut4_out_5_in3_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in1_t, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in3_t, p_lut4_out_5_in3_lut4_out_in2_t, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p10_t, p_lut4_out_5_in0_t, p_lut4_out_6_in3_t, p9_t, p_lut4_out_7_in1_t, p_lut4_out_7_in2_t, p_lut4_out_6_in3_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p8_t, p_lut4_out_8_in1_t, p_lut4_out_7_in0_t, p_lut4_out_8_in2_t, p_lut4_out_9_in3_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in0_t, p_lut4_out_8_in2_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_t, p_lut4_out_8_in3_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p7_t, p_lut4_out_9_in1_t, p_lut4_out_9_in1_lut4_out_in1_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_t, p_lut4_out_9_in3_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in1_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_8_in0_t, p_lut4_out_9_in3_t, p_lut4_out_11_in0_t, p_lut4_out_in0_t, p_lut4_out_11_in1_t, p_lut4_out_in1_t, p_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in0_t, p_lut4_out_in2_lut4_out_in0_t, p_lut4_out_in2_lut4_out_in1_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in1_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_lut4_out_in2_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_in2_lut4_out_in2_t
+	output wire p4_output, p15_output, p6_output, p5_output, p_lut4_out_9_in0_output, p_lut4_out_11_in2_output, p3_output, p_lut4_out_12_in2_output, p_lut4_out_12_in2_lut4_out_in1_output, p_lut4_out_12_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_12_in2_lut4_out_in2_output, p2_output, p_lut4_out_12_in0_output, p_lut4_out_12_in1_output, p_lut4_out_13_in2_output, p_lut4_out_12_in2_lut4_out_in0_output, p_lut4_out_13_in2_lut4_out_in2_output, p_lut4_out_13_in3_output, p1_output, p_lut4_out_14_in0_output, p_lut4_out_13_in1_output, p_lut4_out_14_in1_output, p_lut4_out_13_in0_output, p_lut4_out_14_in2_output, p0_output, p_lut4_out_1_in0_output, p_lut4_out_1_in1_output, p_lut4_out_1_in2_output, p_lut4_out_2_in3_lut4_out_in2_output, p_lut4_out_1_in2_lut4_out_in2_output, p14_output, p_lut4_out_2_in1_output, p_lut4_out_2_in2_output, p_lut4_out_3_in3_lut4_out_in1_output, p_lut4_out_2_in2_lut4_out_in0_output, p_lut4_out_2_in2_lut4_out_in1_output, p_lut4_out_2_in2_lut4_out_in2_output, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in0_output, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_output, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_output, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in3_output, p_lut4_out_2_in3_output, p_lut4_out_2_in3_lut4_out_in0_output, p_lut4_out_2_in3_lut4_out_in1_output, p_lut4_out_2_in2_lut4_out_in1_lut4_out_in0_output, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_output, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_lut4_out_in3_output, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in1_output, p13_output, p_lut4_out_2_in0_output, p_lut4_out_3_in3_output, p12_output, p_lut4_out_4_in1_output, p_lut4_out_4_in2_output, p_lut4_out_3_in3_lut4_out_in0_output, p_lut4_out_4_in2_lut4_out_in0_output, p_lut4_out_4_in2_lut4_out_in1_output, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in1_output, p_lut4_out_4_in2_lut4_out_in2_output, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in2_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in2_output, p11_output, p_lut4_out_5_in1_output, p_lut4_out_4_in0_output, p_lut4_out_5_in2_output, p_lut4_out_6_in3_lut4_out_in1_output, p_lut4_out_5_in2_lut4_out_in0_output, p_lut4_out_5_in2_lut4_out_in1_output, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in1_output, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_5_in2_lut4_out_in2_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in0_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in0_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_output, p_lut4_out_5_in3_output, p_lut4_out_5_in3_lut4_out_in0_output, p_lut4_out_5_in3_lut4_out_in1_output, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in3_output, p_lut4_out_5_in3_lut4_out_in2_output, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in0_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_lut4_out_in3_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_output, p10_output, p_lut4_out_5_in0_output, p_lut4_out_6_in3_output, p9_output, p_lut4_out_7_in1_output, p_lut4_out_7_in2_output, p_lut4_out_6_in3_lut4_out_in0_output, p_lut4_out_7_in2_lut4_out_in0_output, p_lut4_out_7_in2_lut4_out_in1_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in1_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_output, p_lut4_out_7_in2_lut4_out_in2_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in0_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_output, p8_output, p_lut4_out_8_in1_output, p_lut4_out_7_in0_output, p_lut4_out_8_in2_output, p_lut4_out_9_in3_lut4_out_in1_output, p_lut4_out_8_in2_lut4_out_in0_output, p_lut4_out_8_in2_lut4_out_in1_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in1_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_output, p_lut4_out_8_in2_lut4_out_in2_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in0_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in0_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in1_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_8_in3_output, p_lut4_out_8_in3_lut4_out_in0_output, p_lut4_out_8_in3_lut4_out_in1_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in1_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in1_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in2_output, p_lut4_out_8_in3_lut4_out_in2_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in0_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_lut4_out_in2_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in1_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_output, p7_output, p_lut4_out_9_in1_output, p_lut4_out_9_in1_lut4_out_in1_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_output, p_lut4_out_9_in2_output, p_lut4_out_9_in3_lut4_out_in0_output, p_lut4_out_9_in2_lut4_out_in0_output, p_lut4_out_9_in2_lut4_out_in1_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in1_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_output, p_lut4_out_9_in2_lut4_out_in2_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in0_output, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_output, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_output, p_lut4_out_8_in0_output, p_lut4_out_9_in3_output, p_lut4_out_11_in0_output, p_lut4_out_in0_output, p_lut4_out_11_in1_output, p_lut4_out_in1_output, p_lut4_out_in2_output, p_lut4_out_9_in1_lut4_out_in0_output, p_lut4_out_in2_lut4_out_in0_output, p_lut4_out_in2_lut4_out_in1_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in1_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in0_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in1_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_lut4_out_in2_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_output, p_lut4_out_in2_lut4_out_in2_output, p4_t_output, p15_t_output, p6_t_output, p5_t_output, p_lut4_out_9_in0_t_output, p_lut4_out_11_in2_t_output, p3_t_output, p_lut4_out_12_in2_t_output, p_lut4_out_12_in2_lut4_out_in1_t_output, p_lut4_out_12_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_12_in2_lut4_out_in2_t_output, p2_t_output, p_lut4_out_12_in0_t_output, p_lut4_out_12_in1_t_output, p_lut4_out_13_in2_t_output, p_lut4_out_12_in2_lut4_out_in0_t_output, p_lut4_out_13_in2_lut4_out_in2_t_output, p_lut4_out_13_in3_t_output, p1_t_output, p_lut4_out_14_in0_t_output, p_lut4_out_13_in1_t_output, p_lut4_out_14_in1_t_output, p_lut4_out_13_in0_t_output, p_lut4_out_14_in2_t_output, p0_t_output, p_lut4_out_1_in0_t_output, p_lut4_out_1_in1_t_output, p_lut4_out_1_in2_t_output, p_lut4_out_2_in3_lut4_out_in2_t_output, p_lut4_out_1_in2_lut4_out_in2_t_output, p14_t_output, p_lut4_out_2_in1_t_output, p_lut4_out_2_in2_t_output, p_lut4_out_3_in3_lut4_out_in1_t_output, p_lut4_out_2_in2_lut4_out_in0_t_output, p_lut4_out_2_in2_lut4_out_in1_t_output, p_lut4_out_2_in2_lut4_out_in2_t_output, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t_output, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in3_t_output, p_lut4_out_2_in3_t_output, p_lut4_out_2_in3_lut4_out_in0_t_output, p_lut4_out_2_in3_lut4_out_in1_t_output, p_lut4_out_2_in2_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_lut4_out_in3_t_output, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in1_t_output, p13_t_output, p_lut4_out_2_in0_t_output, p_lut4_out_3_in3_t_output, p12_t_output, p_lut4_out_4_in1_t_output, p_lut4_out_4_in2_t_output, p_lut4_out_3_in3_lut4_out_in0_t_output, p_lut4_out_4_in2_lut4_out_in0_t_output, p_lut4_out_4_in2_lut4_out_in1_t_output, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_4_in2_lut4_out_in2_t_output, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in2_t_output, p11_t_output, p_lut4_out_5_in1_t_output, p_lut4_out_4_in0_t_output, p_lut4_out_5_in2_t_output, p_lut4_out_6_in3_lut4_out_in1_t_output, p_lut4_out_5_in2_lut4_out_in0_t_output, p_lut4_out_5_in2_lut4_out_in1_t_output, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_5_in2_lut4_out_in2_t_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t_output, p_lut4_out_5_in3_t_output, p_lut4_out_5_in3_lut4_out_in0_t_output, p_lut4_out_5_in3_lut4_out_in1_t_output, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in3_t_output, p_lut4_out_5_in3_lut4_out_in2_t_output, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_lut4_out_in3_t_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_t_output, p10_t_output, p_lut4_out_5_in0_t_output, p_lut4_out_6_in3_t_output, p9_t_output, p_lut4_out_7_in1_t_output, p_lut4_out_7_in2_t_output, p_lut4_out_6_in3_lut4_out_in0_t_output, p_lut4_out_7_in2_lut4_out_in0_t_output, p_lut4_out_7_in2_lut4_out_in1_t_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_7_in2_lut4_out_in2_t_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t_output, p8_t_output, p_lut4_out_8_in1_t_output, p_lut4_out_7_in0_t_output, p_lut4_out_8_in2_t_output, p_lut4_out_9_in3_lut4_out_in1_t_output, p_lut4_out_8_in2_lut4_out_in0_t_output, p_lut4_out_8_in2_lut4_out_in1_t_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_8_in2_lut4_out_in2_t_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in1_t_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t_output, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_8_in3_t_output, p_lut4_out_8_in3_lut4_out_in0_t_output, p_lut4_out_8_in3_lut4_out_in1_t_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_8_in3_lut4_out_in2_t_output, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_lut4_out_in2_t_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_t_output, p7_t_output, p_lut4_out_9_in1_t_output, p_lut4_out_9_in1_lut4_out_in1_t_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_9_in2_t_output, p_lut4_out_9_in3_lut4_out_in0_t_output, p_lut4_out_9_in2_lut4_out_in0_t_output, p_lut4_out_9_in2_lut4_out_in1_t_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_9_in2_lut4_out_in2_t_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t_output, p_lut4_out_8_in0_t_output, p_lut4_out_9_in3_t_output, p_lut4_out_11_in0_t_output, p_lut4_out_in0_t_output, p_lut4_out_11_in1_t_output, p_lut4_out_in1_t_output, p_lut4_out_in2_t_output, p_lut4_out_9_in1_lut4_out_in0_t_output, p_lut4_out_in2_lut4_out_in0_t_output, p_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in0_t_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_t_output, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in1_t_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_t_output, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t_output, p_lut4_out_in2_lut4_out_in2_t_output
 );
+
+	wire p4, p15, p6, p5, p_lut4_out_9_in0, p_lut4_out_11_in2, p3, p_lut4_out_12_in2, p_lut4_out_12_in2_lut4_out_in1, p_lut4_out_12_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_12_in2_lut4_out_in2, p2, p_lut4_out_12_in0, p_lut4_out_12_in1, p_lut4_out_13_in2, p_lut4_out_12_in2_lut4_out_in0, p_lut4_out_13_in2_lut4_out_in2, p_lut4_out_13_in3, p1, p_lut4_out_14_in0, p_lut4_out_13_in1, p_lut4_out_14_in1, p_lut4_out_13_in0, p_lut4_out_14_in2, p0, p_lut4_out_1_in0, p_lut4_out_1_in1, p_lut4_out_1_in2, p_lut4_out_2_in3_lut4_out_in2, p_lut4_out_1_in2_lut4_out_in2, p14, p_lut4_out_2_in1, p_lut4_out_2_in2, p_lut4_out_3_in3_lut4_out_in1, p_lut4_out_2_in2_lut4_out_in0, p_lut4_out_2_in2_lut4_out_in1, p_lut4_out_2_in2_lut4_out_in2, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in3, p_lut4_out_2_in3, p_lut4_out_2_in3_lut4_out_in0, p_lut4_out_2_in3_lut4_out_in1, p_lut4_out_2_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_lut4_out_in3, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in1, p13, p_lut4_out_2_in0, p_lut4_out_3_in3, p12, p_lut4_out_4_in1, p_lut4_out_4_in2, p_lut4_out_3_in3_lut4_out_in0, p_lut4_out_4_in2_lut4_out_in0, p_lut4_out_4_in2_lut4_out_in1, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_4_in2_lut4_out_in2, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in2, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in2, p11, p_lut4_out_5_in1, p_lut4_out_4_in0, p_lut4_out_5_in2, p_lut4_out_6_in3_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_5_in2_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3, p_lut4_out_5_in3, p_lut4_out_5_in3_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in1, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in3, p_lut4_out_5_in3_lut4_out_in2, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3, p10, p_lut4_out_5_in0, p_lut4_out_6_in3, p9, p_lut4_out_7_in1, p_lut4_out_7_in2, p_lut4_out_6_in3_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3, p8, p_lut4_out_8_in1, p_lut4_out_7_in0, p_lut4_out_8_in2, p_lut4_out_9_in3_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in0, p_lut4_out_8_in2_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in1, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3, p_lut4_out_8_in3_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in2, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_lut4_out_in2, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3, p7, p_lut4_out_9_in1, p_lut4_out_9_in1_lut4_out_in1, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2, p_lut4_out_9_in3_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in1, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2, p_lut4_out_9_in2_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3, p_lut4_out_8_in0, p_lut4_out_9_in3, p_lut4_out_11_in0, p_lut4_out_in0, p_lut4_out_11_in1, p_lut4_out_in1, p_lut4_out_in2, p_lut4_out_9_in1_lut4_out_in0, p_lut4_out_in2_lut4_out_in0, p_lut4_out_in2_lut4_out_in1, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in1, p_lut4_out_in2_lut4_out_in1_lut4_out_in0, p_lut4_out_in2_lut4_out_in1_lut4_out_in1, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in1, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_lut4_out_in2, p_lut4_out_in2_lut4_out_in1_lut4_out_in2, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2, p_lut4_out_in2_lut4_out_in2, p4_t, p15_t, p6_t, p5_t, p_lut4_out_9_in0_t, p_lut4_out_11_in2_t, p3_t, p_lut4_out_12_in2_t, p_lut4_out_12_in2_lut4_out_in1_t, p_lut4_out_12_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_12_in2_lut4_out_in2_t, p2_t, p_lut4_out_12_in0_t, p_lut4_out_12_in1_t, p_lut4_out_13_in2_t, p_lut4_out_12_in2_lut4_out_in0_t, p_lut4_out_13_in2_lut4_out_in2_t, p_lut4_out_13_in3_t, p1_t, p_lut4_out_14_in0_t, p_lut4_out_13_in1_t, p_lut4_out_14_in1_t, p_lut4_out_13_in0_t, p_lut4_out_14_in2_t, p0_t, p_lut4_out_1_in0_t, p_lut4_out_1_in1_t, p_lut4_out_1_in2_t, p_lut4_out_2_in3_lut4_out_in2_t, p_lut4_out_1_in2_lut4_out_in2_t, p14_t, p_lut4_out_2_in1_t, p_lut4_out_2_in2_t, p_lut4_out_3_in3_lut4_out_in1_t, p_lut4_out_2_in2_lut4_out_in0_t, p_lut4_out_2_in2_lut4_out_in1_t, p_lut4_out_2_in2_lut4_out_in2_t, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p_lut4_out_2_in2_lut4_out_in2_lut4_out_in3_t, p_lut4_out_2_in3_t, p_lut4_out_2_in3_lut4_out_in0_t, p_lut4_out_2_in3_lut4_out_in1_t, p_lut4_out_2_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_t, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in0_lut4_out_in3_t, p_lut4_out_2_in3_lut4_out_in1_lut4_out_in1_t, p13_t, p_lut4_out_2_in0_t, p_lut4_out_3_in3_t, p12_t, p_lut4_out_4_in1_t, p_lut4_out_4_in2_t, p_lut4_out_3_in3_lut4_out_in0_t, p_lut4_out_4_in2_lut4_out_in0_t, p_lut4_out_4_in2_lut4_out_in1_t, p_lut4_out_4_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_4_in2_lut4_out_in2_t, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in2_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_4_in2_lut4_out_in2_lut4_out_in2_t, p11_t, p_lut4_out_5_in1_t, p_lut4_out_4_in0_t, p_lut4_out_5_in2_t, p_lut4_out_6_in3_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_5_in2_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p_lut4_out_5_in3_t, p_lut4_out_5_in3_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in1_t, p_lut4_out_5_in3_lut4_out_in1_lut4_out_in3_t, p_lut4_out_5_in3_lut4_out_in2_t, p_lut4_out_5_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_5_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p10_t, p_lut4_out_5_in0_t, p_lut4_out_6_in3_t, p9_t, p_lut4_out_7_in1_t, p_lut4_out_7_in2_t, p_lut4_out_6_in3_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_7_in2_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p8_t, p_lut4_out_8_in1_t, p_lut4_out_7_in0_t, p_lut4_out_8_in2_t, p_lut4_out_9_in3_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in0_t, p_lut4_out_8_in2_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in1_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_8_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_t, p_lut4_out_8_in3_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in2_t, p_lut4_out_8_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in0_lut4_out_in2_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in0_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in1_t, p_lut4_out_8_in3_lut4_out_in2_lut4_out_in2_lut4_out_in3_t, p7_t, p_lut4_out_9_in1_t, p_lut4_out_9_in1_lut4_out_in1_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_t, p_lut4_out_9_in3_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in1_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_lut4_out_in2_t, p_lut4_out_9_in2_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_t, p_lut4_out_9_in2_lut4_out_in2_lut4_out_in0_lut4_out_in3_t, p_lut4_out_8_in0_t, p_lut4_out_9_in3_t, p_lut4_out_11_in0_t, p_lut4_out_in0_t, p_lut4_out_11_in1_t, p_lut4_out_in1_t, p_lut4_out_in2_t, p_lut4_out_9_in1_lut4_out_in0_t, p_lut4_out_in2_lut4_out_in0_t, p_lut4_out_in2_lut4_out_in1_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in1_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in0_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_t, p_lut4_out_9_in1_lut4_out_in1_lut4_out_in2_lut4_out_in1_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in1_lut4_out_in2_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_t, p_lut4_out_in2_lut4_out_in1_lut4_out_in2_lut4_out_in2_t, p_lut4_out_in2_lut4_out_in2_t
 
 	LUT3 #(.INIT(8'b10010110)) LUT_1 (
 		.I0(p_lut4_out_in2),
