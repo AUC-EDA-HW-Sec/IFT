@@ -1,5 +1,6 @@
 import os
 import subprocess
+import shutil
 from itertools import product
 from unittest import result
 import os
@@ -15,16 +16,23 @@ class IFT:
     def __init__(self, eblif_fileName):
         self.eblif_fileName = eblif_fileName
         
-        self.base_out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'out'))
+        self.base_out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'out', f"{self.eblif_fileName.replace('.eblif', '')}"))
         self.top_mod_dir = os.path.join(self.base_out_dir, 'top_module')
         self.lut_lib_dir = os.path.join(self.base_out_dir, 'LUTLIFT_lib')
         self.default_luts_dir = os.path.join(self.base_out_dir, 'default_LUTs')
         self.sby_dir = os.path.join(self.base_out_dir, 'sby')
+        self.eblif_dir = os.path.join(self.base_out_dir, 'eblif')
+        self.source_default_luts_dir = os.path.join(os.path.dirname(self.base_out_dir), 'default_LUTs')
+        self.eblif_source_path = os.path.join(os.path.dirname(__file__), '..', 'examples', self.eblif_fileName)
+        self.eblif_copy_path = os.path.join(self.eblif_dir, os.path.basename(self.eblif_fileName))
         
         # Ensure directories exist right away
         os.makedirs(self.top_mod_dir, exist_ok=True)
         os.makedirs(self.lut_lib_dir, exist_ok=True)
+        shutil.copytree(self.source_default_luts_dir, self.default_luts_dir, dirs_exist_ok=True)
         os.makedirs(self.sby_dir, exist_ok=True)
+        os.makedirs(self.eblif_dir, exist_ok=True)
+        shutil.copy2(self.eblif_source_path, self.eblif_copy_path)
         
         self.instance_fileName = os.path.join(self.top_mod_dir, self.eblif_fileName.replace('.eblif', '.v'))
         
@@ -332,7 +340,10 @@ class IFT:
             f.write(f"\twire ")
             for i in range(len(self.output_names) - 1):
                 f.write(f"{self.output_names[i]}, ")
-            f.write(f"{self.output_names[-1]}\n\n")
+            f.write(f"{self.output_names[-1]};\n\n")
+            for output_name in self.output_names:
+                f.write(f"\tassign {output_name}_output = {output_name};\n")
+            f.write("\n")
 
 
         # Generate IFT logic for each LUT and write the corresponding Verilog instantiations
@@ -610,6 +621,6 @@ circuit_file=${{PATH:TASK_DIR}}/{module_name}.v
 
 
 if __name__ == "__main__":
-    eblif_fileName = "mapped.eblif"
+    eblif_fileName = "FA_1bit.eblif"
     ift = IFT(eblif_fileName)
     ift.run()
