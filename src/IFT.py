@@ -282,8 +282,12 @@ class IFT:
         i = 1
         module_name = self.verilog_safe_name(self.eblif_fileName.replace('.eblif', ''))
         for lut in self.LUTs:
-            print(f"LUT #{i}: {lut.output_name}")
+            lut_inputs = int(len(lut.input_names))
+            lut_length = int(2**(lut_inputs))
+            lut_module = ""
             hexa = hex(int(lut.result, 2)).replace("0x", "")
+            print(f"LUT #{i}: {lut.output_name} (hexa: {hexa})")
+            print(f"   - {lut_inputs} Inputs: {', '.join(lut.input_names)}")
             implicants = self.ift_logic_generation(lut)
             function = self.translateImplicants(implicants)
             self.output_expressions[lut.output_name] = self.get_original_expression(lut)
@@ -292,9 +296,6 @@ class IFT:
             print(f"   - {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}\n")
             # print("" + "-" * 80 + "\n")
             tainted = self.to_verilog_module(hexa, lut.output_name + "_t")
-            lut_inputs = int(len(self.input_names)/2)
-            lut_length = int(2**(lut_inputs))
-            lut_module = ""
             if not default_lut_module[lut_inputs]:
                 with open(os.path.join(self.default_luts_dir, f"LUT{lut_inputs}.v"), 'r') as f:                    
                     lut_module = f.read()
@@ -325,21 +326,21 @@ class IFT:
         # Generate IFT logic for each LUT and write the corresponding Verilog instantiations
         for lut in self.LUTs:
             hexa = hex(int(lut.result, 2)).replace("0x", "")
-            lut_inputs = int(len(self.input_names)/2)
+            lut_inputs = int(len(lut.input_names))
             lut_length = int(2**(lut_inputs))
 
             with open(self.instance_fileName, 'a') as f:
                 # Write the original LUT module instantiation using standart LUT primitive
                 f.write(f"\tLUT{lut_inputs} #(.INIT({lut_length}'b{lut.result})) LUT_{count} (\n")
                 for i in range(lut_inputs):
-                    f.write(f"\t\t.I{i}({self.input_names[i]}),\n")
+                    f.write(f"\t\t.I{i}({lut.input_names[i]}),\n")
                 f.write(f"\t\t.O({lut.output_name})\n")
                 f.write("\t);\n\n")
 
                 # Write the IFT LUT module instantiation using the generated IFT module
                 f.write(f"\tLUT_{hexa} LUT_{count}_t(\n")
-                for i in range(len(self.input_names)):
-                    f.write(f"\t\t.I{i}({self.input_names[i]}),\n")
+                for i in range(len(lut.input_names)):
+                    f.write(f"\t\t.I{i}({lut.input_names[i]}),\n")
                 f.write(f"\t\t.O_t({lut.output_name}_t)\n")
                 f.write("\t);\n\n")
             count = count + 1
@@ -531,6 +532,7 @@ circuit_file=${{PATH:TASK_DIR}}/{module_name}.v
             
     def run(self):
             self.generate_top_module()
+            print("Generated top module")
             
             module_name = self.verilog_safe_name(self.eblif_fileName.replace('.eblif', ''))
             sby_filename = f"{module_name}.sby"
@@ -548,6 +550,7 @@ circuit_file=${{PATH:TASK_DIR}}/{module_name}.v
                 f.write(f"prep -top {module_name}\n\n[files]\n{self.instance_fileName}\n")
 
             try:
+                print(f"Running SymbiYosys verification for {module_name}")
                 result = subprocess.run(
                     ["sby", "-f", sby_filename], 
                     cwd=self.sby_dir,
@@ -595,6 +598,6 @@ circuit_file=${{PATH:TASK_DIR}}/{module_name}.v
 
 
 if __name__ == "__main__":
-    eblif_fileName = "FA_1bit.eblif"
+    eblif_fileName = "mapped.eblif"
     ift = IFT(eblif_fileName)
     ift.run()
