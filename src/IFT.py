@@ -34,7 +34,7 @@ class IFT:
         self.default_luts_dir = os.path.join(self.base_out_dir, 'default_LUTs')
         self.sby_dir = os.path.join(self.base_out_dir, 'sby')
         self.eblif_dir = os.path.join(self.base_out_dir, 'eblif')
-        self.source_default_luts_dir = os.path.join(repo_root, 'out', 'default_LUTs')
+        self.source_default_luts_dir = os.path.join(repo_root, 'default_LUTs')
         self.eblif_copy_path = os.path.join(self.eblif_dir, os.path.basename(self.eblif_fileName))
         
         # Ensure directories exist right away
@@ -208,16 +208,11 @@ class IFT:
         Output: A formatted string representing the logic expression
             (e.g., "|(&(A_t, B), &(B_t, A_t), &(A, B_t))")
         """
-        # for key, value in self.output_expressions.items(): # Substitute previously generated expressions if they are present in the current expression
-        #     if key in self.name_map:
-        #         sub = self.name_map[key]
-        #         expr = expr.compose({sub: value})
+        for key, value in self.output_expressions.items(): # Substitute previously generated expressions if they are present in the current expression
+            if key in self.name_map:
+                sub = self.name_map[key]
+                expr = expr.compose({sub: value})
         expr = expr.to_dnf() # Convert the expression to Disjunctive Normal Form to simplify it before minimizing
-        # expr_s = str(expr)
-        # for var in self.vars:  # Replace pyeda variable names with user-friendly names
-        #     if str(var) in expr_s:
-        #         expr_s = expr_s.replace(str(var), str(var).replace("v", "I")).replace("[", "").replace("]", "")
-        # expr_s = expr_s.replace('Or', '|').replace('And', '&').replace('~', '~')
         minimal_expr, = espresso_exprs(expr) # Minimize the expression
         minimal_s = str(minimal_expr)
         for var in self.vars:  # Replace pyeda variable names with user-friendly names
@@ -225,7 +220,6 @@ class IFT:
                 minimal_s = minimal_s.replace(str(var), str(var).replace("v", "I")).replace("[", "").replace("]", "")
         minimal_s = minimal_s.replace('Or', '|').replace('And', '&').replace('~', '~')
         return minimal_s
-        # return expr_s
     
 
     def to_verilog_expression(self, expr: str) -> str:
@@ -258,11 +252,11 @@ class IFT:
         return verilog_expr
     
 
-    def to_verilog_module(self, lut_output: str, ift_output: str) -> str:
+    def to_verilog_module(self, lut_inputs: int, hexa: str, ift_output: str) -> str:
         """
         Generate a Verilog file containing the original and IFT expressions for a given LUT
 
-        Input: The output name of the LUT, the original expression, and the IFT expression
+        Input: The number of inputs for the LUT, the hex value of the LUT, and the IFT expression
 
         Output: A Verilog file written to the output directory, containing a module with the original and IFT logic for each LUT
             (e.g., "module LUT_3(
@@ -275,18 +269,18 @@ class IFT:
                     endmodule"
                 )
         """
-        path = os.path.join(self.lut_lib_dir, f"LUT_{lut_output}.v")
+        path = os.path.join(self.lut_lib_dir, f"LUT_{hexa}.v")
         if os.path.exists(path):
             with open(path, 'r') as f:
                 content = f.read()
-                if f"module LUT_{lut_output}(" in content:
+                if f"module LUT_{hexa}(" in content:
                     return content
             return ""
         else:
             content = ""
-            content += f"module LUT_{lut_output}(\n"
+            content += f"module LUT_{hexa}(\n"
             content += "\tinput "
-            for i in range(len(self.input_names)):
+            for i in range(lut_inputs):
                 content += f"I{i}, "
             content += "\n"
             content += f"\toutput O_t\n"
@@ -322,7 +316,7 @@ class IFT:
             print(f"   - {lut.output_name} = {self.output_expressions[lut.output_name]}")
             print(f"   - {lut.output_name}_t = {self.output_expressions[lut.output_name + '_t']}\n")
             # print("" + "-" * 80 + "\n")
-            tainted = self.to_verilog_module(hexa, lut.output_name + "_t")
+            tainted = self.to_verilog_module(lut_inputs * 2, hexa, lut.output_name + "_t") # lut_inputs * 2 because we have both original and tainted inputs
             if not default_lut_module[lut_inputs]:
                 with open(os.path.join(self.default_luts_dir, f"LUT{lut_inputs}.v"), 'r') as f:                    
                     lut_module = f.read()
@@ -346,19 +340,22 @@ class IFT:
             for input_name in self.input_names:
                 f.write(f"{input_name}, ")
             f.write("\n")
-            f.write(f"\toutput wire ")
+            # f.write(f"\toutput wire ")
+            f.write(f"\toutput ")
             for i in range(len(self.output_names) - 1):
-                f.write(f"{self.output_names[i]}_output, ")
-            f.write(f"{self.output_names[-1]}_output\n")
+            #     f.write(f"{self.output_names[i]}_output, ")
+                f.write(f"{self.output_names[i]}, ")
+            # f.write(f"{self.output_names[-1]}_output\n")
+            f.write(f"{self.output_names[-1]}\n")
             f.write(");\n\n")
 
-            f.write(f"\twire ")
-            for i in range(len(self.output_names) - 1):
-                f.write(f"{self.output_names[i]}, ")
-            f.write(f"{self.output_names[-1]};\n\n")
-            for output_name in self.output_names:
-                f.write(f"\tassign {output_name}_output = {output_name};\n")
-            f.write("\n")
+            # f.write(f"\twire ")
+            # for i in range(len(self.output_names) - 1):
+            #     f.write(f"{self.output_names[i]}, ")
+            # f.write(f"{self.output_names[-1]};\n\n")
+            # for output_name in self.output_names:
+            #     f.write(f"\tassign {output_name}_output = {output_name};\n")
+            # f.write("\n")
 
 
         # Generate IFT logic for each LUT and write the corresponding Verilog instantiations
@@ -379,6 +376,8 @@ class IFT:
                 f.write(f"\tLUT_{hexa} LUT_{count}_t(\n")
                 for i in range(len(lut.input_names)):
                     f.write(f"\t\t.I{i}({lut.input_names[i]}),\n")
+                for i in range(len(lut.input_names)):
+                    f.write(f"\t\t.I{i + len(lut.input_names)}({lut.input_names[i]}_t),\n")
                 f.write(f"\t\t.O_t({lut.output_name}_t)\n")
                 f.write("\t);\n\n")
             count = count + 1
@@ -638,5 +637,6 @@ circuit_file=${{PATH:TASK_DIR}}/{module_name}.v
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         raise SystemExit("Usage: python src/IFT.py <path-to-generated-eblif>")
+    print(f"Running IFT on EBLIF file: {sys.argv[1]}")
     ift = IFT(sys.argv[1])
     ift.run()

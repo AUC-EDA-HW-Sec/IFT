@@ -19,6 +19,9 @@ class EBLIF:
                 if line.startswith(".inputs"):
                     inputs = line.strip().split()[1:]
                     self.input_names.extend(inputs)
+                elif line.startswith(".outputs"):
+                    outputs = line.strip().split()[1:]
+                    self.output_names.extend(outputs)
                 elif line.startswith(".subckt lut"):
                     subckt = line.strip()
                     try:
@@ -27,7 +30,6 @@ class EBLIF:
                         param = None
                     lut = LUT(subckt, param)
                     self.LUTs.append(lut)
-                    self.output_names.extend([lut.output_name])
         return self.LUTs
     
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ endmodule
 //================================================================================
 
 module LUT_17(
-	input I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, 
+	input I0, I1, I2, I3, I4, I5, 
 	output O_t
 );
 
@@ -19,8 +19,8 @@ module LUT_17(
 		| (I4 & I5) 
 		| (I3 & I2 & ~I1) 
 		| (I3 & I4) 
-		| (I0 & I5 & ~I1) 
-		| (~I0 & I5 & I1) 
+		| (I5 & ~I1 & I0) 
+		| (I5 & I1 & ~I0) 
 		| (I3 & ~I2 & I1);
 
 endmodule
@@ -29,7 +29,7 @@ endmodule
 //================================================================================
 
 module LUT_8e(
-	input I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, 
+	input I0, I1, I2, I3, I4, I5, 
 	output O_t
 );
 
@@ -38,8 +38,8 @@ module LUT_8e(
 		| (I4 & I5) 
 		| (I3 & I2 & ~I1) 
 		| (I3 & I4) 
-		| (~I0 & I5 & ~I1) 
-		| (I0 & I5 & I1) 
+		| (I5 & ~I1 & ~I0) 
+		| (I5 & I1 & I0) 
 		| (I3 & ~I2 & I1) 
 		| (I4 & I2 & I0);
 
@@ -49,7 +49,7 @@ endmodule
 //================================================================================
 
 module LUT_96(
-	input I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, 
+	input I0, I1, I2, I3, I4, I5, 
 	output O_t
 );
 
@@ -61,7 +61,7 @@ endmodule
 //================================================================================
 
 module LUT_69(
-	input I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, 
+	input I0, I1, I2, I3, I4, I5, 
 	output O_t
 );
 
@@ -74,19 +74,8 @@ endmodule
 
 module FA_2bit(
 	input a0, a1, b0, b1, cin, a0_t, a1_t, b0_t, b1_t, cin_t, 
-	output wire cout_$lut_Y_A_output, cout_output, sum0_output, sum1_output, cout_$lut_Y_A_t_output, cout_t_output, sum0_t_output, sum1_t_output
+	output sum0, sum1, cout, sum0_t, sum1_t, cout_t
 );
-
-	wire cout_$lut_Y_A, cout, sum0, sum1, cout_$lut_Y_A_t, cout_t, sum0_t, sum1_t;
-
-	assign cout_$lut_Y_A_output = cout_$lut_Y_A;
-	assign cout_output = cout;
-	assign sum0_output = sum0;
-	assign sum1_output = sum1;
-	assign cout_$lut_Y_A_t_output = cout_$lut_Y_A_t;
-	assign cout_t_output = cout_t;
-	assign sum0_t_output = sum0_t;
-	assign sum1_t_output = sum1_t;
 
 	LUT3 #(.INIT(8'b00010111)) LUT_1 (
 		.I0(a0),
@@ -99,6 +88,9 @@ module FA_2bit(
 		.I0(a0),
 		.I1(b0),
 		.I2(cin),
+		.I3(a0_t),
+		.I4(b0_t),
+		.I5(cin_t),
 		.O_t(cout_$lut_Y_A_t)
 	);
 
@@ -113,6 +105,9 @@ module FA_2bit(
 		.I0(cout_$lut_Y_A),
 		.I1(a1),
 		.I2(b1),
+		.I3(cout_$lut_Y_A_t),
+		.I4(a1_t),
+		.I5(b1_t),
 		.O_t(cout_t)
 	);
 
@@ -127,6 +122,9 @@ module FA_2bit(
 		.I0(a0),
 		.I1(b0),
 		.I2(cin),
+		.I3(a0_t),
+		.I4(b0_t),
+		.I5(cin_t),
 		.O_t(sum0_t)
 	);
 
@@ -141,6 +139,9 @@ module FA_2bit(
 		.I0(cout_$lut_Y_A),
 		.I1(a1),
 		.I2(b1),
+		.I3(cout_$lut_Y_A_t),
+		.I4(a1_t),
+		.I5(b1_t),
 		.O_t(sum1_t)
 	);
 
@@ -184,17 +185,14 @@ module FA_2bit(
 		`endif
 
 		// Isolated Output Assertions
-		`ifdef CHECK_cout_$lut_Y_A
-			assert (cout_$lut_Y_A_t == 1'b0);
-		`endif
-		`ifdef CHECK_cout
-			assert (cout_t == 1'b0);
-		`endif
 		`ifdef CHECK_sum0
 			assert (sum0_t == 1'b0);
 		`endif
 		`ifdef CHECK_sum1
 			assert (sum1_t == 1'b0);
+		`endif
+		`ifdef CHECK_cout
+			assert (cout_t == 1'b0);
 		`endif
 	end
 `endif
