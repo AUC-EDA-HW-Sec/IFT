@@ -1,0 +1,35 @@
+# Benchmark "FA_2bit" written by ABC on Fri Oct  2 01:43:53 2026
+.model FA_2bit
+.inputs a0 a1 b0 b1 cin a0_t a1_t b0_t b1_t cin_t 
+.outputs cout_$lut_Y_A_output cout_output \
+sum0_output sum1_output cout_$lut_Y_A_t_output \
+cout_t_output sum0_t_output sum1_t_output 
+.names new_$undef
+ 0
+.names b0 a0 cin cout_$lut_Y_A_output
+-00 1
+0-0 1
+00- 1
+.names a1 b1 cout_$lut_Y_A_output cout_output
+-01 1
+1-1 1
+10- 1
+.names b1 a1 cout_$lut_Y_A_output sum1_output
+000 1
+011 1
+101 1
+110 1
+.names b0 a0 cin sum0_output
+001 1
+010 1
+100 1
+111 1
+.names new_$undef sum1_t_output
+1 1
+.names new_$undef sum0_t_output
+1 1
+.names new_$undef cout_t_output
+1 1
+.names new_$undef cout_$lut_Y_A_t_output
+1 1
+.end

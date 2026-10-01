@@ -10,8 +10,11 @@ class EBLIF:
         self.parseFile()
 
     def parseFile(self) -> list: # parses the EBLIF file to extract LUTs
-        examples_dir = os.path.join(os.path.dirname(__file__), '..', 'examples', self.fileName)
-        with open(examples_dir, 'r') as file:
+        if os.path.isfile(self.fileName):
+            eblif_path = self.fileName
+        else:
+            eblif_path = os.path.join(os.path.dirname(__file__), '..', 'examples', self.fileName)
+        with open(eblif_path, 'r') as file:
             for line in file:
                 if line.startswith(".inputs"):
                     inputs = line.strip().split()[1:]

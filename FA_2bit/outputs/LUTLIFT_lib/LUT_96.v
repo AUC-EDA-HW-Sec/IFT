@@ -1,5 +1,5 @@
 module LUT_96(
-	input I0, I1, I2, I3, I4, I5, 
+	input I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, 
 	output O_t
 );
 

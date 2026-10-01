@@ -1,6 +1,7 @@
 import os
 import subprocess
 import shutil
+import sys
 from itertools import product
 from unittest import result
 import os
@@ -14,25 +15,37 @@ from Key import *
 
 class IFT:
     def __init__(self, eblif_fileName):
-        self.eblif_fileName = eblif_fileName
-        
-        self.base_out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'out', f"{self.eblif_fileName.replace('.eblif', '')}"))
+        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+        requested_path = eblif_fileName
+        if not os.path.isabs(requested_path):
+            requested_path = os.path.join(repo_root, requested_path)
+        self.eblif_source_path = os.path.abspath(requested_path)
+        if not os.path.isfile(self.eblif_source_path):
+            raise FileNotFoundError(f"EBLIF file not found: {self.eblif_source_path}")
+
+        self.eblif_fileName = os.path.basename(self.eblif_source_path)
+        source_eblif_dir = os.path.dirname(self.eblif_source_path)
+        if os.path.basename(source_eblif_dir) == 'eblif' and os.path.basename(os.path.dirname(source_eblif_dir)) == 'outputs':
+            self.base_out_dir = os.path.dirname(source_eblif_dir)
+        else:
+            self.base_out_dir = os.path.join(repo_root, 'out', self.eblif_fileName.replace('.eblif', ''))
         self.top_mod_dir = os.path.join(self.base_out_dir, 'top_module')
         self.lut_lib_dir = os.path.join(self.base_out_dir, 'LUTLIFT_lib')
         self.default_luts_dir = os.path.join(self.base_out_dir, 'default_LUTs')
         self.sby_dir = os.path.join(self.base_out_dir, 'sby')
         self.eblif_dir = os.path.join(self.base_out_dir, 'eblif')
-        self.source_default_luts_dir = os.path.join(os.path.dirname(self.base_out_dir), 'default_LUTs')
-        self.eblif_source_path = os.path.join(os.path.dirname(__file__), '..', 'examples', self.eblif_fileName)
+        self.source_default_luts_dir = os.path.join(repo_root, 'out', 'default_LUTs')
         self.eblif_copy_path = os.path.join(self.eblif_dir, os.path.basename(self.eblif_fileName))
         
         # Ensure directories exist right away
+        os.makedirs(self.base_out_dir, exist_ok=True)
         os.makedirs(self.top_mod_dir, exist_ok=True)
         os.makedirs(self.lut_lib_dir, exist_ok=True)
         shutil.copytree(self.source_default_luts_dir, self.default_luts_dir, dirs_exist_ok=True)
         os.makedirs(self.sby_dir, exist_ok=True)
         os.makedirs(self.eblif_dir, exist_ok=True)
-        shutil.copy2(self.eblif_source_path, self.eblif_copy_path)
+        if os.path.abspath(self.eblif_source_path) != os.path.abspath(self.eblif_copy_path):
+            shutil.copy2(self.eblif_source_path, self.eblif_copy_path)
         self.instance_fileName = os.path.join(self.top_mod_dir, self.eblif_fileName.replace('.eblif', '.v'))
         
         self.eblif = EBLIF(eblif_fileName)
@@ -294,6 +307,7 @@ class IFT:
         default_lut_module = [False] * 6
         i = 1
         module_name = self.verilog_safe_name(self.eblif_fileName.replace('.eblif', ''))
+        defined_luts = set()
         for lut in self.LUTs:
             lut_inputs = int(len(lut.input_names))
             lut_length = int(2**(lut_inputs))
@@ -317,8 +331,10 @@ class IFT:
                 if lut_module:
                     f.write(lut_module)
                     f.write("\n\n" + "//" + "=" * 80 + "\n\n")
-                f.write(tainted)
-                f.write("\n\n" + "//" + "=" * 80 + "\n\n")
+                if hexa not in defined_luts:
+                    defined_luts.add(hexa)
+                    f.write(tainted)
+                    f.write("\n\n" + "//" + "=" * 80 + "\n\n")
             i += 1
                 
 
@@ -620,6 +636,7 @@ circuit_file=${{PATH:TASK_DIR}}/{module_name}.v
 
 
 if __name__ == "__main__":
-    eblif_fileName = "FA_1bit.eblif"
-    ift = IFT(eblif_fileName)
+    if len(sys.argv) != 2:
+        raise SystemExit("Usage: python src/IFT.py <path-to-generated-eblif>")
+    ift = IFT(sys.argv[1])
     ift.run()
